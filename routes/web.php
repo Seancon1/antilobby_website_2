@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,15 +13,26 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/*
 Route::get('/', function () {
     return view('welcome');
 });
 
+
+/*
 Route::get('antilobby/user/register', function () {
     return view('user.register');
 });
+*/
+/*
+Route::middleware('auth:sanctum')->get('antilobby/protected', function (Request $request) {
+    return $request->user();
+});
+*/
+//Route::get('antilobby/protected', 'sessionController@showAuth');
+Route::middleware('auth:api')->get('antilobby/protected', 'sessionController@showAuth');
 
+Route::get('/', 'sessionController@index');
 Route::get('antilobby', 'sessionController@index');
 Route::get('antilobby/sessions', 'sessionController@index');
 Route::get('antilobby/sessions/all', 'sessionController@index');
@@ -32,12 +44,16 @@ Route::get('antilobby/chart', 'sessionController@chart');
 Route::get('antilobby/chart/{val}', 'sessionController@chart');
 Route::get('antilobby/chart/json/{id}', 'sessionController@chartJSON');
 
-//Below dynamically gets the request so that it can be adapted to 
+//Below dynamically gets the request so that it can be adapted to
 //a chartJSON request
 Route::get('antilobby/charts/{desc}', 'ChartController@index'); //
 Route::get('antilobby/charts/json/{desc}', ['as'=> 'chart.grab', 'uses' => 'ChartController@index']); //<- defined route
 Route::get('antilobby/charts/json/{desc}', 'ChartController@JSONHandler');
- 
+
+
+Route::get('login', 'sessionController@index');
+Route::redirect('login', 'api2/login');
+
 
 
 /* Save for later: this is how you call in a blade

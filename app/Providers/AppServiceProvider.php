@@ -27,8 +27,10 @@ class AppServiceProvider extends ServiceProvider
     {
         $url->forceScheme('https'); // added this to prevent outside libraries from using http for requests
         //
+        /*
         $charts->register([
             \App\Charts\SingleSessionChart::class
         ]);
+        */
     }
 }
