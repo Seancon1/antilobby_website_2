@@ -54,6 +54,14 @@ Route::get('antilobby/charts/json/{desc}', 'ChartController@JSONHandler');
 Route::get('login', 'sessionController@index');
 Route::redirect('login', 'api2/login');
 
+//Session ID related API requests
+Route::get('antilobby/user/session/id', 'sessionController@create'); //create a new id and echos it
+//Route::put('users/{id}', '');
+Route::put('antilobby/user/session/update/{id}/{totalTime}','sessionController@update');
+Route::get('antilobby/user/session/fetch/{id}', 'sessionController@show'); //get id and show information
+//Route::put('antilobby/user/session/{id}/', 'sessionController@update');
+
+
 
 
 /* Save for later: this is how you call in a blade

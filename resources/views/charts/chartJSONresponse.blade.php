@@ -5,4 +5,3 @@
      die(json_encode($chartData));
      }
     @endphp
-  

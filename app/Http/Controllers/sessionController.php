@@ -24,7 +24,7 @@ class SessionController extends Controller
 
         //var_dump($unique_session_list);
         //var_dump($unique_session_list->sessionValue);
-        
+
         /*
         $allSessionsFromIP = DB::table('session')
                             ->select('*')
@@ -40,7 +40,7 @@ class SessionController extends Controller
 
     public function get(Request $request) {
         $fetchedSession = DB::select(DB::raw("SELECT * FROM `apptime` WHERE `sessionValue` = $request->sessionID"));
-                        
+
         //echo "get request for session id  " . $request->sessionID;
         //echo "\n get request for IP " . $request->ip();
         return view('viewSingleSession', ['userIP' => $request->ip(),
@@ -70,7 +70,7 @@ class SessionController extends Controller
                         ->whereIn('sessionValue', Arr::pluck($selectValues2, 'sessionValue'))
                         ->sum('time');
         //print_r($totalTime);
-        /* 
+        /*
         $totalTime = getTotalTimeRecorded(getSessionsFromIP($WEBUSER_IP));
         $totalTimeInHours = round(($totalTime/3600), 2);
         $avgTimePerSession = round(($totalTimeInHours / count(getSessionsFromIP($WEBUSER_IP))), 2);
@@ -135,7 +135,18 @@ class SessionController extends Controller
      */
     public function create()
     {
-        //
+        $numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+        //$random = Arr::random($numbers, 10) . Arr::random($numbers, 10) . Arr::random($numbers, 10); //better way to do this ik
+
+        //Generate a new ID for a session, returns a unique ID to be used to save app times and update session data
+        $session = new \App\Session;
+
+        //Generate a random numeric value
+        $session->sessionValue = mt_rand(0,999999999999999);
+        $session->save();
+
+        echo $session->sessionValue;
+        return;
     }
 
     /**
@@ -157,7 +168,9 @@ class SessionController extends Controller
      */
     public function show($id)
     {
-        //
+        $session = \App\Session::find(1)->where('sessionValue', '=', $id)->get();
+
+        return $session->toJson();
     }
 
     /**
@@ -176,11 +189,19 @@ class SessionController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
+     * @param  int  $totalTime
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $totalTime)
     {
-        //
+        //Update session values
+        $session = \App\Session::find(1)->where('sessionValue', '=', $id)->get();
+        $session->time = $totalTime;
+        $session->save();
+        //return ( ? "1" : "0");
+        return;
+        //echo $session->id;
+        //return;
     }
 
     /**

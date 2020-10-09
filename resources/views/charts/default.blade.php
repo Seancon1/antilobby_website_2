@@ -1,3 +1,6 @@
+    @auth
+        <!-- Chart generated with Auth -->
+    @endauth
 
     <!-- Chart's container dd-->
 <div id="chart{{ $uniqueID ?? ''}}" style="height: 250px;"></div>
@@ -5,7 +8,7 @@
         <script src="https://unpkg.com/chart.js@2.9.3/dist/Chart.min.js"></script>
         <!-- Chartisan -->
         <script src="https://unpkg.com/@chartisan/chartjs@^2.1.0/dist/chartisan_chartjs.umd.js"></script>
-        
+
     @php
       if(!empty($bladePassUrl)) {
         $jsonURL = $bladePassUrl;
@@ -13,7 +16,7 @@
         $jsonURL = '';
       }
     @endphp
-    
+
     <script>
 
         var item{{ $uniqueID ?? ''}} = "{{ $jsonURL ?? ''}}";

@@ -7,11 +7,12 @@ use Chartisan\PHP\Chartisan;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class ChartController extends Controller
 {
     //Grab request dynamically, then transform request into a json url
-    //so that I can form 
+    //so that I can form
     public function index(Request $request) {
 
         $bladeName = 'charts.';
@@ -23,12 +24,12 @@ class ChartController extends Controller
                 $getURL .= 'api/antilobby/charts/json/' . $request->desc . '';
             break;
 
-            case "1":   
+            case "1":
                 $bladeName .= "default";
                 $getURL = "api/antilobby/charts/json/1";
             break;
-            
-            default:    
+
+            default:
                 $bladeName .= "default";
                 $getURL = "api/antilobby/charts/json/default";
             break;
@@ -50,15 +51,15 @@ class ChartController extends Controller
 
             case "test":
                 //$collection = DB::select(DB::raw("SELECT * FROM `session` WHERE `sessionValue` IN ( SELECT `sessionValue` FROM `ip_table` WHERE `IP` = '" . $request->ip() . "')"));
-                
+
                 $itemKeys = [];
                 $itemVals = [];
-                
+
                 for($i = 0; $i < 10; $i++) {
                     array_push($itemKeys, "DATA-KEY".$i);
                     array_push($itemVals, $i);
                 }
-                    
+
 
                 $outChart = Chartisan::build()
                 ->labels($itemKeys)
@@ -70,7 +71,7 @@ class ChartController extends Controller
             case "stats_top_10_processes":
                 $totalProcesses = DB::select(DB::raw("SELECT `appName`, `appTime` FROM `apptime` WHERE `sessionValue` IN (SELECT `sessionValue` FROM `ip_table` WHERE `IP` = '".$request->ip()."')"));
                 $uniqueProcess = DB::select(DB::raw("SELECT DISTINCT `appName` FROM `apptime` WHERE `sessionValue` IN (SELECT `sessionValue` FROM `ip_table` WHERE `IP` = '".$request->ip()."')"));
-  
+
                 //var_dump(sizeof($totalProcesses));
                 //var_dump(sizeof($uniqueProcess));
 
@@ -78,17 +79,17 @@ class ChartController extends Controller
 
                 //var_dump(json_encode($totalProcesses), true);
                 //var_dump($collection);
-            
+
                 foreach($uniqueProcess as $key) {
                     $collection[$key->appName] = 0;
                 }
                 //var_dump($collection);
-                
+
                 //go through each key
                 foreach($totalProcesses as $item) {
                     if(!Arr::exists($totalProcesses, $item->appName)) {
                         $collection[$item->appName] = $item->appTime;
-                    } 
+                    }
                         $collection[$item->appName] += $item->appTime;
                     }
 
@@ -105,7 +106,7 @@ class ChartController extends Controller
                     }
                     */
                 //var_dump($collection);
-            
+
                 //var_dump($collection);
 
                 /*
@@ -119,13 +120,13 @@ class ChartController extends Controller
                 */
 
 
-                
+
                 $outChart = Chartisan::build()
                 ->labels(array_keys($collection))
                 ->dataset('Total Time', array_values($collection))
                 ->toJSON();
 
-                
+
             break;
 
             case "stats_overall_hourly_session":
@@ -135,9 +136,14 @@ class ChartController extends Controller
             ->labels(['No Data'])
             ->dataset('Data', [0])
             ->toJSON();
-            
+
             break;
         }
+
+        if(!empty($request->user())) {
+            //Select personable data
+        }
+
         //$outChart = empty($outChart) ? ['null' => null] : $outChart;
         $jsonOut = json_decode($outChart);
         return view('charts.chartJSONresponse', ['json' => 'true', 'chartData' => $jsonOut, 'flag'=> $flag]);

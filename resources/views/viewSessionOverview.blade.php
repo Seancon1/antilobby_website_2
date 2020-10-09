@@ -24,7 +24,7 @@
                             <td><a href="{{ URL::to("/api/antilobby/sessions/") . "/". $session->sessionValue }}">{{ $session->sessionValue }}</a></td>
                             <td>{{ gmdate("H:i:s", $session->time) }}</td>
                             <td>{{ $session->date }}</td>
-                            
+
                             </th>
                         </tr>
                     @endforeach

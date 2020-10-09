@@ -7,7 +7,7 @@
             Welcome Guest ({{ $userIP }}) <a href="{{ URL("api2/login") }}">Login</a> | <a href="{{ URL("api2/register") }}">Register</a>
         @endguest
         @auth
-            Welcome Authorized {{ $username }} <a href="{{ URL("api2/dashboard") }}">Logout</a>
+            Welcome {{ auth()->user()->name ?? '' }} <a href="{{ URL("api2/dashboard") }}">Logout</a>
         @endauth
         </div>
 

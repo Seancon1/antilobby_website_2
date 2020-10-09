@@ -2,25 +2,29 @@
  @parent
 
  @section('content')
-     
+
 
     <?php
-    $avgPerSession = ($totalSessions < 1) ? '0' : round((($totalTime/3600))/$totalSessions, 2); 
+    $avgPerSession = ($totalSessions < 1) ? '0' : round((($totalTime/3600))/$totalSessions, 2);
     $baseURL = URL::to('api/antilobby/charts/json/');
     ?>
 
 
 <div class="row">
-<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://prestigecode.com/api/antilobby/charts/json/stats_top_10_processes', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 10 Processes', 'legend' => 'false'])</div>
-    <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://prestigecode.com/api/antilobby/charts/json/test', 'uniqueID' => '2', 'chartType' => 'bar', 'chartTitle' => 'Chart'])</div>
+<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/charts/json/stats_top_10_processes', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 10 Processes', 'legend' => 'false'])</div>
+    <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/charts/json/test', 'uniqueID' => '2', 'chartType' => 'bar', 'chartTitle' => 'Chart'])</div>
   </div>
 <div class="row">
-    <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://prestigecode.com/api/antilobby/charts/json/default', 'uniqueID' => '3'])</div>
+    <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/charts/json/default', 'uniqueID' => '3'])</div>
     <div class="col-md-6">
         @include('charts.default',
-         ['bladePassUrl'=> 'https://prestigecode.com/api/antilobby/charts/json/test', 'uniqueID' => '4'])
+         ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/json/1', 'uniqueID' => '4'])
     </div>
   </div>
+
+  @auth
+   <p class="alert alert-info">More graphs coming soon that are profile specific!</p>
+  @endauth
 
     <!--
   <div class="row">
