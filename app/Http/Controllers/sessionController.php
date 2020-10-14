@@ -195,13 +195,15 @@ class SessionController extends Controller
     public function update(Request $request, $id, $totalTime)
     {
         //Update session values
-        $session = \App\Session::find(1)->where('sessionValue', '=', $id)->get();
+        $session = \App\Session::find(1)->where('sessionValue', '=', $id)->firstOrFail();
         $session->time = $totalTime;
-        $session->save();
-        //return ( ? "1" : "0");
-        return;
-        //echo $session->id;
-        //return;
+        /*
+        if($session->save()) {
+        return "succesfully updated session" . $id . " value to: " . $totalTime;
+        }
+        */
+        return ($session->save() ? "success" : "error");
+
     }
 
     /**

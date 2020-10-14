@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+use App\Http\Controllers\Controller;
 
 
 /*
@@ -57,7 +62,7 @@ Route::redirect('login', 'api2/login');
 //Session ID related API requests
 Route::get('antilobby/user/session/id', 'sessionController@create'); //create a new id and echos it
 //Route::put('users/{id}', '');
-Route::put('antilobby/user/session/update/{id}/{totalTime}','sessionController@update');
+Route::middleware('auth:sanctum')->put('antilobby/user/session/update/{id}/{totalTime}','sessionController@update');
 Route::get('antilobby/user/session/fetch/{id}', 'sessionController@show'); //get id and show information
 //Route::put('antilobby/user/session/{id}/', 'sessionController@update');
 
@@ -79,3 +84,25 @@ Route::get('antilobby/program/create/{pname}/{time}', 'programController@update'
 Route::get('antilobby/session/create/{sessionid}', 'sessionController@create');
 Route::get('antilobby/session/update/{sessionid}/{newtime}', 'sessionController@update');
 */
+
+Route::post('antilobby/sanctum/token', function (Request $request) {
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+        'device_name' => 'required',
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+
+    if (! $user || ! Hash::check($request->password, $user->password)) {
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
+        ]);
+    }
+
+    return $user->createToken($request->device_name)->plainTextToken;
+});
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');

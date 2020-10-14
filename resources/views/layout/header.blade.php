@@ -32,7 +32,7 @@
             <h3>Known Issues</h3>
             <ul>
                 <li><p><b>Page not found</b>: There are some redirection issues when you login/logout. You are still logged in but you are not redirected to the right pages afterwards.</p></li>
-                <li><p><b>Show My Stats</b>: Graphs currently break when you login and also after you logout.</p></li>
+                <li><p><b>Show My Stats</b>: <del>Graphs currently break when you login and also after you logout.</del> Graphs still occasionally break, but mostly work.</p></li>
                 <li><p><b>Password Reset & Email Links</b>: Password reset email links are not correctly generated and do not work.</p></li>
             </ul>
         </div>

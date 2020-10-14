@@ -14,4 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:api')->get('antilobby/protected', "sessionController@showAuth");
+//Route::middleware('auth:sanctum')->get('antilobby/protected', "sessionController@showAuth");
