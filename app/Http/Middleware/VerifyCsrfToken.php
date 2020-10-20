@@ -15,5 +15,7 @@ class VerifyCsrfToken extends Middleware
         //
         '/antilobby/sanctum/*',
         '/antilobby/user/session/*',
+        '/antilobby/user/apptime/*',
+
     ];
 }
