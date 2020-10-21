@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AppTime extends Model
+class ip_table extends Model
 {
-    protected $table = 'apptime';
+    public $timestamps = false;
+    protected $table = 'ip_table';
 
-    public $fillable = [
+    protected $fillable = [
         'id',
-        'appName',
-        'appTime',
+        'IP',
         'sessionValue',
-        'created_at',
-        'updated_at',
     ];
+
 }

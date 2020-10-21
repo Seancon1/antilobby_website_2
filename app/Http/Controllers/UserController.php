@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
 use Illuminate\Http\Request;
 
-class AppTime extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,14 +34,7 @@ class AppTime extends Controller
      */
     public function store(Request $request)
     {
-        //post
-        $apptime = new \App\Models\AppTime;
-        $apptime->sessionValue = $request->sessionid;
-        $apptime->appName = $request->appName;
-        $apptime->appTime = $request->appTime;
-
-        $apptime->save();
-
+        //
     }
 
     /**
@@ -51,9 +43,9 @@ class AppTime extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        return $request->user()->email;
     }
 
     /**
@@ -74,27 +66,9 @@ class AppTime extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        //PUT/PATCH
-
-        $apptime = \App\Models\AppTime::find(1)->where([
-            ['sessionValue', '=', $request->sessionid],
-            ['appName', '=', $request->appName]
-        ])->first();
-
-        if(!empty($apptime)){
-            $apptime->appTime = $request->appTime; //update any current sessions in progress
-        } else {
-            $apptime = new \App\Models\AppTime;
-            $apptime->appName = $request->appName;
-            $apptime->appTime = $request->appTime;
-            $apptime->sessionValue = $request->sessionid;
-
-        }
-
-        return ($apptime->save() ? "success" : "error");
-
+        //
     }
 
     /**

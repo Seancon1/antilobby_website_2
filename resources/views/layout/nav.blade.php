@@ -12,5 +12,7 @@
 
 <hr>
 <a class="btn btn-outline-dark" href="{{ URL::to("/api/antilobby/sessions/") }}" role="button">Show All Sessions</a>
-<a class="btn btn-outline-dark" href="#{{ URL::to("/api/antilobby/program/total") }}" role="button">Show Programs Totals</a>
+@auth
+<a class="btn btn-outline-dark" href="{{ URL::to("/api/antilobby/program/totals") }}" role="button">Show Programs Totals</a>
+@endauth
 <a class="btn btn-outline-dark" href="{{ URL::to("/api/antilobby/sessions/stats") }}" role="button">Show My Stats</a>

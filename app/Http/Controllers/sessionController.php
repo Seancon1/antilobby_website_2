@@ -133,7 +133,7 @@ class SessionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
         //$random = Arr::random($numbers, 10) . Arr::random($numbers, 10) . Arr::random($numbers, 10); //better way to do this ik
@@ -143,6 +143,7 @@ class SessionController extends Controller
 
         //Generate a random numeric value
         $session->sessionValue = mt_rand(0,999999999999999);
+        $session->user_id = $request->user()->id;
         $session->save();
 
         echo $session->sessionValue;
@@ -197,12 +198,25 @@ class SessionController extends Controller
         //Update session values
         $session = \App\Session::find(1)->where('sessionValue', '=', $id)->firstOrFail();
         $session->time = $totalTime;
+        $session->user_id = $request->user()->id; //putting this here incase old sessions were not created with a linked uid
+
+        //check to see if pair has been added
+        $ip_table = \App\Models\ip_table::find(1)->where('IP', '=', $request->ip())->where('sessionValue', '=', $id)->first();
+        if(!empty($ip_table)){
+            $ip_table->IP = $request->ip();
+            $ip_table->sessionValue = $id;
+        } else {
+            $ip_table = new \App\Models\ip_table;
+            $ip_table->IP = $request->ip();
+            $ip_table->sessionValue = $id;
+        }
+
         /*
         if($session->save()) {
         return "succesfully updated session" . $id . " value to: " . $totalTime;
         }
         */
-        return ($session->save() ? "success" : "error");
+        return (($session->save() && $ip_table->save()) ? "success" : "error");
 
     }
 

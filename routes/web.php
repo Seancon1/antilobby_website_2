@@ -18,25 +18,14 @@ use App\Http\Controllers\Controller;
 | contains the "web" middleware group. Now create something great!
 |
 */
-/*
-Route::get('/', function () {
-    return view('welcome');
-});
 
-
-/*
-Route::get('antilobby/user/register', function () {
-    return view('user.register');
-});
-*/
 /*
 Route::middleware('auth:sanctum')->get('antilobby/protected', function (Request $request) {
     return $request->user();
 });
 */
-//Route::get('antilobby/protected', 'sessionController@showAuth');
-Route::middleware('auth:api')->get('antilobby/protected', 'sessionController@showAuth');
 
+/** Public pages */
 Route::get('/', 'sessionController@index');
 Route::get('antilobby', 'sessionController@index');
 Route::get('antilobby/sessions', 'sessionController@index');
@@ -45,9 +34,18 @@ Route::get('antilobby/sessions/stats', 'sessionController@stats');
 Route::get('antilobby/sessions/stats/all', 'sessionController@statsall');
 Route::get('antilobby/sessions/{sessionID}', 'sessionController@get');
 
+/** Redirect pages */
+
+
+/** Private pages for auth users */
+Route::middleware('auth:sanctum')->get('antilobby/program/totals', 'UserWebResourceController@GetUserProgramTotals');
+
+
+/** Chart routes */
 Route::get('antilobby/chart', 'sessionController@chart');
 Route::get('antilobby/chart/{val}', 'sessionController@chart');
 Route::get('antilobby/chart/json/{id}', 'sessionController@chartJSON');
+
 
 //Below dynamically gets the request so that it can be adapted to
 //a chartJSON request
@@ -56,38 +54,29 @@ Route::get('antilobby/charts/json/{desc}', ['as'=> 'chart.grab', 'uses' => 'Char
 Route::get('antilobby/charts/json/{desc}', 'ChartController@JSONHandler');
 
 
-Route::get('login', 'sessionController@index');
-Route::redirect('login', 'api2/login');
+//Route::redirect('login', [ 'as' => 'login', 'uses' => 'sessionController@index']);
+//Route::redirect('login', 'antilobby');
 
 /** API REQUESTS from Antilobby - START */
+
+Route::middleware('auth:sanctum')->get('antilobby/user/get', 'UserController@show'); //create a new id and echos it
+
 //Session ID related API requests
 Route::middleware('auth:sanctum')->get('antilobby/user/session/id', 'sessionController@create'); //create a new id and echos it
-Route::middleware('auth:sanctum')->put('antilobby/user/session/update/{id}/{totalTime}','sessionController@update');
+Route::middleware('auth:sanctum')->post('antilobby/user/session/update/{id}/{totalTime}','sessionController@update');
 
-Route::middleware('auth:sanctum')->post('antilobby/user/apptime/{sessionid}/{appName}/{appTime}','AppTime@store');
+Route::middleware('auth:sanctum')->post('antilobby/user/apptime/{sessionid}/{appName}/{appTime}','AppTime@update');
 Route::middleware('auth:sanctum')->put('antilobby/user/apptime/{sessionid}/{appName}/{appTime}/update','AppTime@update');
+Route::middleware('auth:sanctum')->patch('antilobby/user/apptime/{sessionid}/{appName}/{appTime}/update','AppTime@update');
 
 Route::get('antilobby/user/session/fetch/{id}', 'sessionController@show'); //get id and show information
 
 /** API REQUESTS from Antilobby - END */
 
-//Route::put('antilobby/user/session/{id}/', 'sessionController@update');
-
 /* Save for later: this is how you call in a blade
 Route::get('antilobby/charts/{desc}', ['as'=> 'chart.grab', 'uses' => 'ChartController@index']); //<- defined route
 route('chart.grab', ['desc' => 'test'] // call this in blade
 **/
-
-//not yet implemented
-/*
-Route::get('antilobby/program/total', 'programController@total');
-
-Route::get('antilobby/program/create/{pname}/{time}', 'programController@create');
-Route::get('antilobby/program/create/{pname}/{time}', 'programController@update');
-
-*/
-
-
 
 /** Additional authentication provided by Laravel resources */
 
