@@ -14,6 +14,7 @@ class AppTime extends Model
         'appName',
         'appTime',
         'sessionValue',
+        'user_id',
         'created_at',
         'updated_at',
     ];

@@ -39,6 +39,7 @@ Route::get('antilobby/sessions/{sessionID}', 'sessionController@get');
 
 /** Private pages for auth users */
 Route::middleware('auth:sanctum')->get('antilobby/program/totals', 'UserWebResourceController@GetUserProgramTotals');
+Route::middleware('auth:sanctum')->get('antilobby/program/totals/{programID}', 'UserWebResourceController@GetUserProgramSingle');
 
 
 /** Chart routes */

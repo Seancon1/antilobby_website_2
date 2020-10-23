@@ -6,8 +6,7 @@
 
 
 <div class="row">
-    <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/charts/json/test', 'uniqueID' => '1', 'chartType' => 'bar', 'chartTitle' => 'Chart'])</div>
-    <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/charts/json/test', 'uniqueID' => '2', 'chartType' => 'bar', 'chartTitle' => 'Chart'])</div>
+    <div class="col-md-12">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/program/totals?json=true', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Highest to Lowest Totals', 'legend' => 'false'])</div>
 </div>
 
     <!--
@@ -20,19 +19,20 @@
         <h1>Showing Program Totals</h1>
             <table class="table table-hover">
                 <thead>
-                    <th scope="col">All Time Stats</th>
-                    <th scope="col">1</th>
-                    <th scope="col">2</th>
-                    <th scope="col">3</th>
+                    <th scope="col">Program Name</th>
+                    <th scope="col">Total Time</th>
+                    <th scope="col">-</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($SumOfUniquePrograms as $program)
                         <tr>
-                            <th scope="row">0</th>
-                            <td>1</td>
-                            <td>2</td>
-                            <td>3</td>
+                            <th scope="row">{{ $program['appName'] }}</th>
+                            <td>{{ gmdate("H:i:s", $program['appTime']) }}</td>
+                            <td></td>
+
                         </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
