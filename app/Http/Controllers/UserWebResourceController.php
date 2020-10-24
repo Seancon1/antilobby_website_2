@@ -52,6 +52,9 @@ class UserWebResourceController extends Controller
             }
         }
 
+        //Sorting option
+        $unique_programs_sum = ($request->input('time') == 'asc') ? $unique_programs_sum->sortBy('appTime') : $unique_programs_sum->sortByDesc('appTime');
+
         if ($request->input('json') == "true") {
 
             arsort($testCollection);
@@ -67,7 +70,7 @@ class UserWebResourceController extends Controller
 
         }
 
-        return view("UserProgramTotals", ['AllUserPrograms' => $programs, 'SumOfUniquePrograms'=>$unique_programs_sum]);
+        return view("UserProgramTotals", ['request'=> $request, 'AllUserPrograms' => $programs, 'SumOfUniquePrograms'=>$unique_programs_sum]);
     }
 
     public function GetUserProgramSingle(Request $request) {
