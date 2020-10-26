@@ -28,7 +28,7 @@
               .title("{{ $chartTitle ?? '' }}")
               .legend({{ $legend ?? 'true' }})
               .responsive()
-              .colors()
+              .colors(['{{ $colors ?? 'green', 'blue', 'red'}}'])
               ,
         })
 

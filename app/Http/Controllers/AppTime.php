@@ -85,11 +85,13 @@ class AppTime extends Controller
 
         if(!empty($apptime)){
             $apptime->appTime = $request->appTime; //update any current sessions in progress
+            $apptime->user_id = $request->user()->id;
         } else {
             $apptime = new \App\Models\AppTime;
             $apptime->appName = $request->appName;
             $apptime->appTime = $request->appTime;
             $apptime->sessionValue = $request->sessionid;
+            $apptime->user_id = $request->user()->id;
 
         }
 

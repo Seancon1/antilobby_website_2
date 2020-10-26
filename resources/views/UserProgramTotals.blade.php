@@ -6,7 +6,7 @@
 
 
 <div class="row">
-    <div class="col-md-12">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/program/totals?json=true', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Highest to Lowest Totals', 'legend' => 'false'])</div>
+    <div class="col-md-12">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/user/program/totals?json=true', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Highest to Lowest Totals (Broken)', 'legend' => 'false', 'colors' => '#1B5CB5'])</div>
 </div>
 
     <!--

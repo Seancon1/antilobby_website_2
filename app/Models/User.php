@@ -57,4 +57,10 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function getsessions()
+    {
+        //return $this->hasMany('App\Models\Session', 'user_id', 'id');
+        return $this->hasMany('App\Session');
+    }
 }

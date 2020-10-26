@@ -11,6 +11,34 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
+
+    /**
+     *
+     *
+     *
+     *
+     * Do not use this ONE
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     */
     protected $table = 'users';
 
     /**
@@ -39,4 +67,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getsessions()
+    {
+        //return $this->hasMany('App\Models\Session', 'user_id', 'id');
+        return $this->hasMany('App\Models\Session');
+    }
 }

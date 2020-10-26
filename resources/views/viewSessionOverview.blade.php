@@ -3,10 +3,15 @@
  @section('content')
     <div class="flex-center position-ref full-height">
         <div class="content">
-
+            <h3>Fetching all of your Sessions</h3>
+            @guest
             @yield('OverallChart', View::make('charts.chart'))
+            @endguest
 
-            <h3>Fetching all of your Sessions ( {{ $userIP ?? '' }} )</h3>
+            @auth
+            <p>Chart Coming Soon!</p>
+            @endauth
+
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -17,7 +22,14 @@
                         </tr>
                 </thead>
                 <tbody>
-                    <?php $FetchedSessions = array_reverse($FetchedSessions, true); ?>
+                    <?php
+                        if(empty($request)) {
+                            $FetchedSessions = array_reverse($FetchedSessions, true);
+                        }
+                        else {
+                            # code...
+                        }
+                        ?>
                     @foreach ($FetchedSessions as $session)
                         <tr>
                             <th scope="row">

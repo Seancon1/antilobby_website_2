@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->get('antilobby/protected', function (Request 
 Route::get('/', 'sessionController@index');
 Route::get('antilobby', 'sessionController@index');
 Route::get('antilobby/sessions', 'sessionController@index');
-Route::get('antilobby/sessions/all', 'sessionController@index');
+//Route::get('antilobby/sessions/all', 'sessionController@index');
 Route::get('antilobby/sessions/stats', 'sessionController@stats');
 Route::get('antilobby/sessions/stats/all', 'sessionController@statsall');
 Route::get('antilobby/sessions/{sessionID}', 'sessionController@get');
@@ -38,8 +38,9 @@ Route::get('antilobby/sessions/{sessionID}', 'sessionController@get');
 
 
 /** Private pages for auth users */
-Route::middleware('auth:sanctum')->get('antilobby/program/totals', 'UserWebResourceController@GetUserProgramTotals');
-Route::middleware('auth:sanctum')->get('antilobby/program/totals/{programID}', 'UserWebResourceController@GetUserProgramSingle');
+Route::middleware('auth:sanctum')->get('antilobby/user/sessions/', 'UserWebResourceController@GetAllUserPrograms');
+Route::middleware('auth:sanctum')->get('antilobby/user/program/totals', 'UserWebResourceController@GetUserProgramTotals');
+Route::middleware('auth:sanctum')->get('antilobby/user/program/totals/{appName}', 'UserWebResourceController@GetUserProgramSingle');
 
 
 /** Chart routes */

@@ -39,6 +39,8 @@ class UserWebResourceController extends Controller
         $grouped_keys = $programs->groupBy('appName');
         $grouped_keys->sum('appTime');
 
+        //var_dump($grouped_keys);
+
         $testCollection = [];
 
         foreach($grouped_keys as $item) {
@@ -83,6 +85,21 @@ class UserWebResourceController extends Controller
         //var_dump($program);
 
         return '';
+    }
+
+    public function GetAllUserPrograms(Request $request) {
+        //$session = \App\Session::where("time", '>', 0)->where('user_id', '=', $request->user()->id)->get();
+        //$session = \App\Session::find(1)->apps;
+        //print_r($session);
+        //Fetch user sessions with more than 5
+
+        $userSessions = \App\Models\User::find($request->user()->id)
+            ->getsessions()
+            ->where('time','>', 300)
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('viewSessionOverview', ['FetchedSessions' => $userSessions, 'request' => $request]);
     }
 
 }

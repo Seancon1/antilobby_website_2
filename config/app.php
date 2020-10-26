@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Antilobby'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,9 +52,10 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://www.prestigecode.com/api/'),
 
-    'asset_url' => env('ASSET_URL', null),
+    'asset_url' => env('ASSET_URL', "https://www.prestigecode.com/api/"),
+    'asset_base_url' => env('ASSET_URL', "https://www.prestigecode.com/api/"),
 
     /*
     |--------------------------------------------------------------------------

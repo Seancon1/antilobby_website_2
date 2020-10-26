@@ -21,4 +21,10 @@ class Session extends Model
         'updated_at',
         'user_id'
     ];
+
+    public function apps()
+    {
+        return $this->hasMany('App\Models\AppTime', 'sessionValue', 'sessionValue');
+    }
+
 }
