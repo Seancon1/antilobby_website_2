@@ -9,20 +9,22 @@ class AppTime extends Model
 {
     protected $table = 'apptime';
 
+    protected $foreignKey = 'sessionValue';
+
     public $fillable = [
         'id',
         'appName',
         'appTime',
-        'sessionValue',
         'user_id',
+        'private',
         'created_at',
-        'updated_at',
+        'updated_at'
     ];
 
 
     public function sessions()
     {
-        return $this->belongsTo('App\Session', 'sessionValue', 'sessionValue');
+        return $this->belongsTo('App\Models\Session', 'sessionValue', 'sessionValue');
     }
 
 

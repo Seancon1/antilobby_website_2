@@ -22,9 +22,8 @@
                     <th scope="col">Program Name</th>
                     @php
                      $sortFunc = ($request->input('time') == 'asc') ? 'desc' : 'asc';
-
                     @endphp
-                    <th scope="col"><a href="{{ url("api/antilobby/program/totals?time=" . $sortFunc) }}">Total Time</a></th>
+                    <th scope="col"><a href="{{ url("api/antilobby/user/program/totals?time=" . $sortFunc) }}">Total Time</a></th>
                     <th scope="col">-</th>
                     </tr>
                 </thead>

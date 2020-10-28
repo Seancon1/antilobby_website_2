@@ -92,7 +92,7 @@ class AppTime extends Controller
             $apptime->appTime = $request->appTime;
             $apptime->sessionValue = $request->sessionid;
             $apptime->user_id = $request->user()->id;
-
+            $apptime->private = true;
         }
 
         return ($apptime->save() ? "success" : "error");

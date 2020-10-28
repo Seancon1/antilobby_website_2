@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,22 +9,23 @@ class Session extends Model
     //
     protected $table = 'session';
 
+    protected $primaryKey = 'sessionValue';
+
     protected $fillable = [
         'id',
         'mac',
         'timeType',
         'time',
         'date',
-        'sessionValue',
         'timestamp',
         'created_at',
         'updated_at',
-        'user_id'
+        'user_id',
+        'private',
     ];
 
     public function apps()
     {
-        return $this->hasMany('App\Models\AppTime', 'sessionValue', 'sessionValue');
+        return $this->hasMany('App\Models\AppTime', 'sessionValue');
     }
-
 }

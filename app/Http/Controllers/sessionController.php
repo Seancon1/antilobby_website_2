@@ -38,6 +38,13 @@ class SessionController extends Controller
         return view('viewSessionOverview', ['FetchedSessions' => $allSessionsFromIP, 'userIP' => $request->ip()]);
     }
 
+    public function GetAllPublicSessions(Request $request) {
+        $publicSessions = \App\Models\Session::where('private', '=', false)->where('time', '>', 1200)->orderByDesc('created_at')->paginate(20);
+        $publicSessions ->setPath('/api/antilobby/public/sessions');
+
+        return view('viewSessionOverview', ['FetchedSessions' => $publicSessions, 'userIP' => $request->ip()]);
+    }
+
     public function get(Request $request) {
         $fetchedSession = DB::select(DB::raw("SELECT * FROM `apptime` WHERE `sessionValue` = $request->sessionID"));
 
@@ -48,6 +55,7 @@ class SessionController extends Controller
         'FetchedSession' => $fetchedSession
         ]);
     }
+
 
     public function stats(Request $request) {
         //$fetchedSession = DB::select(DB::raw("SELECT * FROM `apptime` WHERE `sessionValue` = $request->sessionID"));
@@ -139,14 +147,15 @@ class SessionController extends Controller
         //$random = Arr::random($numbers, 10) . Arr::random($numbers, 10) . Arr::random($numbers, 10); //better way to do this ik
 
         //Generate a new ID for a session, returns a unique ID to be used to save app times and update session data
-        $session = new \App\Session;
+        $session = new \App\Models\Session;
 
         //Generate a random numeric value
         $session->sessionValue = mt_rand(0,999999999999999);
         $session->user_id = $request->user()->id;
+        $session->private = true;
+        echo $session->sessionValue;
         $session->save();
 
-        echo $session->sessionValue;
         return;
     }
 
@@ -169,7 +178,7 @@ class SessionController extends Controller
      */
     public function show($id)
     {
-        $session = \App\Session::find(1)->where('sessionValue', '=', $id)->get();
+        $session = \App\Models\Session::find(1)->where('sessionValue', '=', $id)->get();
 
         return $session->toJson();
     }
@@ -196,7 +205,7 @@ class SessionController extends Controller
     public function update(Request $request, $id, $totalTime)
     {
         //Update session values
-        $session = \App\Session::find(1)->where('sessionValue', '=', $id)->firstOrFail();
+        $session = \App\Models\Session::where('sessionValue', '=', $id)->firstOrFail();
         $session->time = $totalTime;
         $session->user_id = $request->user()->id; //putting this here incase old sessions were not created with a linked uid
 
@@ -209,6 +218,7 @@ class SessionController extends Controller
             $ip_table = new \App\Models\ip_table;
             $ip_table->IP = $request->ip();
             $ip_table->sessionValue = $id;
+            $session->private = true;
         }
 
         /*

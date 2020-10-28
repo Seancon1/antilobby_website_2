@@ -5,6 +5,7 @@ namespace App\Providers;
 use ConsoleTVs\Charts\Registrar as Charts;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\UrlGenerator;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(Charts $charts, UrlGenerator $url)
     {
         $url->forceScheme('https'); // added this to prevent outside libraries from using http for requests
+        Paginator::useBootstrap();
         //
         /*
         $charts->register([

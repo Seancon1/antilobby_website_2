@@ -61,6 +61,6 @@ class User extends Authenticatable
     public function getsessions()
     {
         //return $this->hasMany('App\Models\Session', 'user_id', 'id');
-        return $this->hasMany('App\Session');
+        return $this->hasMany('App\Models\Session');
     }
 }

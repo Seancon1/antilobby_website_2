@@ -31,9 +31,9 @@
         <div class="card card-body">
             <h3>Known Issues</h3>
             <ul>
+                <li><p><b>Pagination Links</b>: Small pagination links are not generated correctly, still an on going issue that I have not been able to solve.</p></li>
                 <li><p><b>Page not found</b>: There are some redirection issues when you login/logout. Successive login/register attempts break the flow.</p></li>
                 <li><p><b>Password Reset & Email Links</b>: Password reset email links are not correctly generated and do not work.</p></li>
-                <li><p><b>Show My Stats</b>: <del>Graphs currently break when you login and also after you logout.Graphs still occasionally break, but mostly work.</del></p></li>
             </ul>
         </div>
       </div>

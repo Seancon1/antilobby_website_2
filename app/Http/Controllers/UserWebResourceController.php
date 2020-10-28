@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Chartisan\PHP\Chartisan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 use Request as GlobalRequest;
 
@@ -20,7 +21,7 @@ class UserWebResourceController extends Controller
 
         //echo $request->user();
         //Collect all user session values
-        $AllUserSessionVals = \App\Session::where('user_id', "=", $request->user()->id)->get();
+        $AllUserSessionVals = \App\Models\Session::where('user_id', "=", $request->user()->id)->get();
 
         //var_dump($AllUserSessionVals);
         //var_dump($AllUserSessionVals->sessionValue);
@@ -88,18 +89,32 @@ class UserWebResourceController extends Controller
     }
 
     public function GetAllUserPrograms(Request $request) {
-        //$session = \App\Session::where("time", '>', 0)->where('user_id', '=', $request->user()->id)->get();
-        //$session = \App\Session::find(1)->apps;
-        //print_r($session);
-        //Fetch user sessions with more than 5
 
         $userSessions = \App\Models\User::find($request->user()->id)
             ->getsessions()
             ->where('time','>', 300)
             ->orderByDesc('created_at')
-            ->get();
+            ->paginate(20);
+
+        $userSessions->setPath('/api/antilobby/user/sessions');
+
 
         return view('viewSessionOverview', ['FetchedSessions' => $userSessions, 'request' => $request]);
+    }
+
+        /**
+     * Fetch a single session using the {sessionID}
+     * TO-DO: make it detect whether it is public or private & owner is viewing or not
+     */
+    public function GetSessionSingle(Request $request) {
+
+        $fetchedSession = \App\Models\Session::find($request->sessionID)->apps;
+
+
+        return view('viewSingleSession', ['userIP' => $request->ip(),
+        'sessionID' => $request->sessionID,
+        'FetchedSession' => $fetchedSession
+        ]);
     }
 
 }

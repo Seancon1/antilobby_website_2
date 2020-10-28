@@ -26,13 +26,14 @@ Route::middleware('auth:sanctum')->get('antilobby/protected', function (Request 
 */
 
 /** Public pages */
-Route::get('/', 'sessionController@index');
-Route::get('antilobby', 'sessionController@index');
-Route::get('antilobby/sessions', 'sessionController@index');
+Route::get('/', 'sessionController@GetAllPublicSessions');
+Route::get('antilobby', 'sessionController@GetAllPublicSessions');
+Route::get('antilobby/public/sessions', 'sessionController@GetAllPublicSessions'); //primary url for Public Sessions
 //Route::get('antilobby/sessions/all', 'sessionController@index');
-Route::get('antilobby/sessions/stats', 'sessionController@stats');
-Route::get('antilobby/sessions/stats/all', 'sessionController@statsall');
-Route::get('antilobby/sessions/{sessionID}', 'sessionController@get');
+Route::get('antilobby/public/sessions/stats', 'sessionController@stats');
+Route::get('antilobby/public/sessions/stats/all', 'sessionController@statsall');
+
+Route::get('antilobby/session/{sessionID}', 'UserWebResourceController@GetSessionSingle'); //Fetch individual session
 
 /** Redirect pages */
 
