@@ -32,7 +32,6 @@
                             <th scope="row">{{ $key }}</th>
                             <td>{{ round(($value/3600), 2) }} hr(s) ({{$value}})</td>
                             <td></td>
-
                         </tr>
                     @endforeach
                 </tbody>

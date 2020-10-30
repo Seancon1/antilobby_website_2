@@ -33,7 +33,8 @@ class UserWebResourceController extends Controller
             $totalsCollection->put($name['name'], $temp->sum('time'));
         }
 
-        $collectionToDisplay = ($request->input('time') == 'asc') ? $totalsCollection->sortAsc() : $totalsCollection->sortDesc();
+        $collectionToDisplay = ($request->input('time') == 'asc') ? $totalsCollection->sort() : $totalsCollection->sortDesc();
+
         //dd($collectionToDisplay);
 
         return view("UserProgramTotals", ['request'=> $request, 'SumOfUniquePrograms'=>$collectionToDisplay]);
@@ -55,12 +56,24 @@ class UserWebResourceController extends Controller
 
         $userSessions = \App\Models\User::find($request->user()->id)
             ->getsessions()
-            ->where('time','>', 300)
+            ->where('time','>', 299)
             ->orderByDesc('created_at')
             ->paginate(20);
 
-        $userSessions->setPath('/api/antilobby/user/sessions');
+        if($request->has('json') && $request->input('json')) {
+            $chartCollection = collect([]);
+            //iterate through to match
+            foreach($userSessions as $session) { $chartCollection->put( $session->sessionValue, $session->time);}
 
+            $outChart = Chartisan::build()
+            ->labels($chartCollection->keys()->toArray())
+            ->dataset('Items', $chartCollection->values()->toArray())
+            ->toJSON();
+
+            return $outChart;
+        }
+
+        $userSessions->setPath('/api/antilobby/user/sessions');
 
         return view('viewSessionOverview', ['FetchedSessions' => $userSessions, 'request' => $request, 'PublicSessions' => false]);
     }
