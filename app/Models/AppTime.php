@@ -26,6 +26,4 @@ class AppTime extends Model
     {
         return $this->belongsTo('App\Models\Session', 'sessionValue', 'sessionValue');
     }
-
-
 }

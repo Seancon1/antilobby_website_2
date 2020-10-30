@@ -19,61 +19,24 @@ class UserWebResourceController extends Controller
 
     public function GetUserProgramTotals(Request $request) {
 
-        //echo $request->user();
-        //Collect all user session values
-        $AllUserSessionVals = \App\Models\Session::where('user_id', "=", $request->user()->id)->get();
+        $collection = collect([]);
 
-        //var_dump($AllUserSessionVals);
-        //var_dump($AllUserSessionVals->sessionValue);
-
-        $collection = collect();
-        foreach($AllUserSessionVals as $item) {
-            $collection->push($item->sessionValue);
+        foreach(\App\Models\AppTime::where('user_id', '=', $request->user()->id)->cursor() as $app) {
+            $collection->push(['name' => $app->appName, 'time' => $app->appTime]);
         }
 
-        $programs = \App\Models\AppTime::whereIn('sessionValue', $collection)->get();
-        //$programs = $programs->sum('appTime');
+        $totalsCollection = collect([]);
 
-        //$unique_programs = collect($programs->unique('appName')); //filter all different appNames so I can iterate and add them
-        $unique_programs_sum = collect();
-
-        $grouped_keys = $programs->groupBy('appName');
-        $grouped_keys->sum('appTime');
-
-        //var_dump($grouped_keys);
-
-        $testCollection = [];
-
-        foreach($grouped_keys as $item) {
-            foreach($item as $singleitem) {
-                $tempItem = collect(['appName' => $singleitem->appName, 'appTime' => $item->sum('appTime')]);
-
-                if(!$unique_programs_sum->contains($tempItem)){
-                    $unique_programs_sum->push($tempItem);
-                    $testCollection[$singleitem->appName] = $singleitem->appTime;
-                }
-            }
+        foreach($collection->unique('name') as $name) {
+            $temp = $collection->where('name', $name['name']);
+            //echo $name['name'] ." = ". $temp->sum('time') . " | \n";
+            $totalsCollection->put($name['name'], $temp->sum('time'));
         }
 
-        //Sorting option
-        $unique_programs_sum = ($request->input('time') == 'asc') ? $unique_programs_sum->sortBy('appTime') : $unique_programs_sum->sortByDesc('appTime');
+        $collectionToDisplay = ($request->input('time') == 'asc') ? $totalsCollection->sortAsc() : $totalsCollection->sortDesc();
+        //dd($collectionToDisplay);
 
-        if ($request->input('json') == "true") {
-
-            arsort($testCollection);
-
-            $outChart = Chartisan::build()
-            ->labels(array_keys($testCollection))
-            ->dataset('Time', array_values($testCollection))
-            ->toJSON();
-
-            $jsonOut = json_decode($outChart);
-
-            return view('charts.chartJSONresponse', ['json' => 'true', 'chartData' => $jsonOut, 'flag'=> 0]);
-
-        }
-
-        return view("UserProgramTotals", ['request'=> $request, 'AllUserPrograms' => $programs, 'SumOfUniquePrograms'=>$unique_programs_sum]);
+        return view("UserProgramTotals", ['request'=> $request, 'SumOfUniquePrograms'=>$collectionToDisplay]);
     }
 
     public function GetUserProgramSingle(Request $request) {
@@ -99,7 +62,7 @@ class UserWebResourceController extends Controller
         $userSessions->setPath('/api/antilobby/user/sessions');
 
 
-        return view('viewSessionOverview', ['FetchedSessions' => $userSessions, 'request' => $request]);
+        return view('viewSessionOverview', ['FetchedSessions' => $userSessions, 'request' => $request, 'PublicSessions' => false]);
     }
 
         /**
@@ -116,5 +79,81 @@ class UserWebResourceController extends Controller
         'FetchedSession' => $fetchedSession
         ]);
     }
+
+        /**
+     *
+     *
+     * Private User Stats JSONs
+     * JSON ENDPOINT for graphs
+     *
+     * OUTPUT JSON string
+     */
+    function GetUserStatsJson(Request $request) {
+
+        $outChart = null;
+        $quantifier = ($request->has('show')) ? $request->input('show') : '10' ;
+        $type = ($request->has('type')) ? $request->input('type') : null;
+        $collectionToDisplay = null;
+        $isJSON = ($request->has('json')) ? $request->input('json') : false;
+
+        switch($request->input('graph')) {
+            case 'TopProcesses':
+
+                //$processes = \App\Models\AppTime::where('private', '=', false)->get();
+                $collection = collect([]); //empty collection
+
+                switch($type) {
+
+                    case 'time':
+
+                        foreach(\App\Models\AppTime::where('user_id', '=', $request->user()->id)->cursor() as $app) {
+                            $collection->push(['name' => $app->appName, 'time' => $app->appTime]);
+                        }
+
+                        $totalsCollection = collect([]);
+
+                        foreach($collection->unique('name') as $name) {
+                            $temp = $collection->where('name', $name['name']);
+                            //echo $name['name'] ." = ". $temp->sum('time') . " | \n";
+                            $totalsCollection->put($name['name'], $temp->sum('time'));
+                        }
+
+                        $collectionToDisplay = $totalsCollection->sortDesc();
+
+
+                    break;
+
+                        case "quantity":
+
+                            foreach(\App\Models\AppTime::where('user_id', '=', $request->user()->id)->cursor() as $app) {
+                                $collection->push(['name' => $app->appName]);
+                            }
+
+                            $unique = $collection->countBy('name');
+                            $collectionToDisplay = $unique->sortDesc();;
+                            //dd($unique);
+
+                        break;
+                }
+
+
+
+                if(isset($collectionToDisplay)) {
+
+                    $collectionToDisplay = $collectionToDisplay->splice(0, $quantifier); //Quantifier is POST['show']/$request->input('show')
+
+                    $outChart = Chartisan::build()
+                        ->labels($collectionToDisplay->keys()->toArray())
+                        ->dataset('Items', $collectionToDisplay->values()->toArray())
+                        ->toJSON();
+
+                }
+
+            break;
+        }
+
+        return $outChart;
+     }
+
 
 }

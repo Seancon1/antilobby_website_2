@@ -3,10 +3,9 @@
 
  @section('content')
 
-
-
 <div class="row">
-    <div class="col-md-12">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/user/program/totals?json=true', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Highest to Lowest Totals (Broken)', 'legend' => 'false', 'colors' => '#1B5CB5'])</div>
+    <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/user/stats?graph=TopProcesses&show=15&type=time', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes (Time Used)', 'legend' => 'false', 'colors' => '#1B5CB5'])</div>
+    <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/user/stats?graph=TopProcesses&show=15&type=quantity', 'uniqueID' => '2', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes (Count)', 'legend' => 'false', 'colors' => '#1B5CB5'])</div>
 </div>
 
     <!--
@@ -28,10 +27,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($SumOfUniquePrograms as $program)
+                    @foreach ($SumOfUniquePrograms as $key => $value)
                         <tr>
-                            <th scope="row">{{ $program['appName'] }}</th>
-                            <td>{{ gmdate("H:i:s", $program['appTime']) }}</td>
+                            <th scope="row">{{ $key }}</th>
+                            <td>{{ round(($value/3600), 2) }} hr(s) ({{$value}})</td>
                             <td></td>
 
                         </tr>

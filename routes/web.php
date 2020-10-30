@@ -26,14 +26,15 @@ Route::middleware('auth:sanctum')->get('antilobby/protected', function (Request 
 */
 
 /** Public pages */
-Route::get('/', 'sessionController@GetAllPublicSessions');
-Route::get('antilobby', 'sessionController@GetAllPublicSessions');
-Route::get('antilobby/public/sessions', 'sessionController@GetAllPublicSessions'); //primary url for Public Sessions
-//Route::get('antilobby/sessions/all', 'sessionController@index');
+Route::get('/', 'PublicWebResourceController@GetAllPublicSessions');
+Route::get('antilobby', 'PublicWebResourceController@GetAllPublicSessions');
+Route::get('antilobby/public/sessions', 'PublicWebResourceController@GetAllPublicSessions'); //primary url for Public Sessions
+
 Route::get('antilobby/public/sessions/stats', 'sessionController@stats');
 Route::get('antilobby/public/sessions/stats/all', 'sessionController@statsall');
 
 Route::get('antilobby/session/{sessionID}', 'UserWebResourceController@GetSessionSingle'); //Fetch individual session
+
 
 /** Redirect pages */
 
@@ -44,10 +45,16 @@ Route::middleware('auth:sanctum')->get('antilobby/user/program/totals', 'UserWeb
 Route::middleware('auth:sanctum')->get('antilobby/user/program/totals/{appName}', 'UserWebResourceController@GetUserProgramSingle');
 
 
-/** Chart routes */
+/** Public Chart routes */
 Route::get('antilobby/chart', 'sessionController@chart');
 Route::get('antilobby/chart/{val}', 'sessionController@chart');
 Route::get('antilobby/chart/json/{id}', 'sessionController@chartJSON');
+Route::get('antilobby/chart/public/sessions', 'PublicWebResourceController@GetAllPublicSessions_JSON'); //Main Page Chart
+Route::get('antilobby/chart/public/stats', 'PublicWebResourceController@GetPublicStatsJson'); //Main Page Chart
+
+//** Private User Charts */
+Route::middleware('auth:sanctum')->get('antilobby/chart/user/stats', 'UserWebResourceController@GetUserStatsJson');
+
 
 
 //Below dynamically gets the request so that it can be adapted to
@@ -68,6 +75,7 @@ Route::middleware('auth:sanctum')->get('antilobby/user/get', 'UserController@sho
 Route::middleware('auth:sanctum')->get('antilobby/user/session/id', 'sessionController@create'); //create a new id and echos it
 Route::middleware('auth:sanctum')->post('antilobby/user/session/update/{id}/{totalTime}','sessionController@update');
 
+//APPTIME updates
 Route::middleware('auth:sanctum')->post('antilobby/user/apptime/{sessionid}/{appName}/{appTime}','AppTime@update');
 Route::middleware('auth:sanctum')->put('antilobby/user/apptime/{sessionid}/{appName}/{appTime}/update','AppTime@update');
 Route::middleware('auth:sanctum')->patch('antilobby/user/apptime/{sessionid}/{appName}/{appTime}/update','AppTime@update');

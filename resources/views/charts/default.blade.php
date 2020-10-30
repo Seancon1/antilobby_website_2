@@ -4,10 +4,6 @@
 
     <!-- Chart's container dd-->
 <div id="chart{{ $uniqueID ?? ''}}" style="height: 250px;"></div>
-        <!-- Charting library -->
-        <script src="https://unpkg.com/chart.js@2.9.3/dist/Chart.min.js"></script>
-        <!-- Chartisan -->
-        <script src="https://unpkg.com/@chartisan/chartjs@^2.1.0/dist/chartisan_chartjs.umd.js"></script>
 
     @php
       if(!empty($bladePassUrl)) {
@@ -18,8 +14,7 @@
     @endphp
 
     <script>
-
-        var item{{ $uniqueID ?? ''}} = "{{ $jsonURL ?? ''}}";
+        var item{{ $uniqueID ?? ''}} = "{!! $jsonURL ?? '' !!}";
         var chart{{ $uniqueID ?? ''}} = new Chartisan({
           el: '#chart' + '{{ $uniqueID ?? '' }}',
           url: ''+item{{ $uniqueID ?? ''}},

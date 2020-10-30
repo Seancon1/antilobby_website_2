@@ -11,16 +11,11 @@
 
 
 <div class="row">
-<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/charts/json/stats_top_10_processes', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 10 Processes', 'legend' => 'false'])</div>
-    <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/charts/json/test', 'uniqueID' => '2', 'chartType' => 'bar', 'chartTitle' => 'Chart'])</div>
-  </div>
-<div class="row">
-    <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/charts/json/default', 'uniqueID' => '3'])</div>
-    <div class="col-md-6">
-        @include('charts.default',
-         ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/json/1', 'uniqueID' => '4'])
-    </div>
-  </div>
+
+<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/public/stats?graph=TopProcesses&show=15&type=time', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes by Time Used', 'legend' => 'false'])</div>
+<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/public/stats?graph=TopProcesses&show=10&type=quantity', 'uniqueID' => '2', 'chartType' => 'doughnut', 'chartTitle' => 'Top 10 Processes by Count', 'legend' => 'false'])</div>
+
+</div>
 
   @auth
    <p class="alert alert-info">More graphs coming soon that are profile specific!</p>
