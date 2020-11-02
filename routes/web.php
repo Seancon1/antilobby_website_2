@@ -30,9 +30,7 @@ Route::get('/', 'PublicWebResourceController@GetAllPublicSessions');
 Route::get('antilobby', 'PublicWebResourceController@GetAllPublicSessions');
 Route::get('antilobby/public/sessions', 'PublicWebResourceController@GetAllPublicSessions'); //primary url for Public Sessions
 
-Route::get('antilobby/public/sessions/stats', 'sessionController@stats');
-Route::get('antilobby/public/sessions/stats/all', 'sessionController@statsall');
-
+Route::get('antilobby/public/sessions/stats', 'PublicWebResourceController@GetPublicStats'); //Public Stats
 Route::get('antilobby/session/{sessionID}', 'UserWebResourceController@GetSessionSingle'); //Fetch individual session
 
 
@@ -43,6 +41,8 @@ Route::get('antilobby/session/{sessionID}', 'UserWebResourceController@GetSessio
 Route::middleware('auth:sanctum')->get('antilobby/user/sessions/', 'UserWebResourceController@GetAllUserPrograms');
 Route::middleware('auth:sanctum')->get('antilobby/user/program/totals', 'UserWebResourceController@GetUserProgramTotals');
 Route::middleware('auth:sanctum')->get('antilobby/user/program/totals/{appName}', 'UserWebResourceController@GetUserProgramSingle');
+Route::middleware('auth:sanctum')->get('antilobby/user/sessions/stats', 'UserWebResourceController@GetStats'); //Private Stats
+
 
 
 /** Public Chart routes */
@@ -54,8 +54,6 @@ Route::get('antilobby/chart/public/stats', 'PublicWebResourceController@GetPubli
 
 //** Private User Charts */
 Route::middleware('auth:sanctum')->get('antilobby/chart/user/stats', 'UserWebResourceController@GetUserStatsJson');
-
-
 
 //Below dynamically gets the request so that it can be adapted to
 //a chartJSON request

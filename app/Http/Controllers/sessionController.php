@@ -38,12 +38,6 @@ class SessionController extends Controller
         return view('viewSessionOverview', ['FetchedSessions' => $allSessionsFromIP, 'userIP' => $request->ip()]);
     }
 
-    public function GetAllPublicSessions(Request $request) {
-        $publicSessions = \App\Models\Session::where('private', '=', false)->where('time', '>', 1200)->orderByDesc('created_at')->paginate(20);
-        $publicSessions ->setPath('/api/antilobby/public/sessions');
-
-        return view('viewSessionOverview', ['FetchedSessions' => $publicSessions, 'userIP' => $request->ip()]);
-    }
 
     public function get(Request $request) {
         $fetchedSession = DB::select(DB::raw("SELECT * FROM `apptime` WHERE `sessionValue` = $request->sessionID"));

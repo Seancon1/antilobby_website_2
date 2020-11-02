@@ -1,25 +1,27 @@
 @extends('layout.app')
- @parent
 
  @section('content')
 
 
     <?php
-    $avgPerSession = ($totalSessions < 1) ? '0' : round((($totalTime/3600))/$totalSessions, 2);
-    $baseURL = URL::to('api/antilobby/charts/json/');
+    //$avgPerSession = ($totalSessions < 1) ? '0' : round((($totalTime/3600))/$totalSessions, 2);
+    //$baseURL = URL::to('api/antilobby/charts/json/');
+    //dd($readyTotals);
     ?>
 
 
 <div class="row">
 
+@if(Auth::check() && $isPrivate)
+<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/user/stats?graph=TopProcesses&show=15&type=time', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes by Time Used', 'legend' => 'false', 'colors' => '#00FFFF'])</div>
+<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/user/stats?graph=TopProcesses&show=10&type=quantity', 'uniqueID' => '2', 'chartType' => 'doughnut', 'chartTitle' => 'Top 10 Processes by Count', 'legend' => 'false', 'colors' => '#00FFFF'])</div>
+<p class="alert alert-info">More graphs coming soon!</p>
+@else
 <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/public/stats?graph=TopProcesses&show=15&type=time', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes by Time Used', 'legend' => 'false'])</div>
 <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/public/stats?graph=TopProcesses&show=10&type=quantity', 'uniqueID' => '2', 'chartType' => 'doughnut', 'chartTitle' => 'Top 10 Processes by Count', 'legend' => 'false'])</div>
-
+@endif
 </div>
 
-  @auth
-   <p class="alert alert-info">More graphs coming soon that are profile specific!</p>
-  @endauth
 
     <!--
   <div class="row">
@@ -28,30 +30,32 @@
 -->
     <div class="flex-center position-ref full-height">
         <div class="content">
-        <h1>Showing all time stats for {{ $userIP ?? '' }}</h1>
+        <h3>Showing all time {{ $isPrivate ? 'Your' : 'Public' }} Stats</h3>
             <table class="table table-hover">
                 <thead>
-                    <th scope="col">All Time Stats</th>
+                    <th scope="col">All Time Stats*</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                     </tr>
                 </thead>
+
                 <tbody>
                         <tr>
                             <td>Total Time Recorded:</td>
-                            <td>{{ round(($totalTime/3600), 2) . " hrs" }} {{ "(" . $totalTime . " ticks)" }}</td>
+                            <td>{{ round(($readyTotals->get('totaltime') /3600), 2) . " hrs" }} {{ "(" . 0 . " ticks)" }}</td>
                         </tr>
                         <tr>
                             <td>Sessions Recorded</td>
-                            <td> {{ $totalSessions }}</td>
+                            <td> {{ $readyTotals->get('count') }}</td>
                         </tr>
                         <tr>
                             <td>Average time per Session</td>
-                            <td>{{ $avgPerSession . " hrs" }}</td>
+                            <td>{{ round((($readyTotals->get('totaltime') / $readyTotals->get('count'))/ 3600), 2) . " hrs" }}</td>
                         </tr>
                 </tbody>
             </table>
+            <p>*Note: Only shows sessions of 5 minutes or more.</p>
         </div>
     </div>
 

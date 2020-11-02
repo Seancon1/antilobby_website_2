@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Chartisan\PHP\Chartisan;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class PublicWebResourceController extends Controller
@@ -19,7 +21,7 @@ class PublicWebResourceController extends Controller
       * JSON ENDPOINT
       */
     public function GetAllPublicSessions_JSON(Request $request) {
-        $publicSessions = \App\Models\Session::where('private', '=', false)->where('time', '>', 1200)->take(10)->orderByDesc('created_at')->get();
+        $publicSessions = \App\Models\Session::where('private', '=', false)->where('time', '>', 299)->where('user_id', '>', 0)->take(10)->orderByDesc('created_at')->get();
 
         $collection = collect([]);
         foreach($publicSessions as $session){
@@ -44,7 +46,7 @@ class PublicWebResourceController extends Controller
      */
 
     public function GetAllPublicSessions(Request $request) {
-        $publicSessions = \App\Models\Session::where('private', '=', false)->where('time', '>', 1200)->orderByDesc('created_at')->paginate(20);
+        $publicSessions = \App\Models\Session::where('private', '=', false)->where('time', '>', 299)->where('user_id', '>', 0)->orderByDesc('created_at')->paginate(20);
         $publicSessions ->setPath('/api/antilobby/public/sessions');
 
         return view('viewSessionOverview', ['FetchedSessions' => $publicSessions, 'userIP' => $request->ip(), 'PublicSessions' => true]);
@@ -77,7 +79,7 @@ class PublicWebResourceController extends Controller
 
                     case 'time':
 
-                        foreach(\App\Models\AppTime::where('private', '=', false)->cursor() as $app) {
+                        foreach(\App\Models\AppTime::where('private', '=', false)->where('user_id', '>', 0)->cursor() as $app) {
                             $collection->push(['name' => $app->appName, 'time' => $app->appTime]);
                         }
 
@@ -94,11 +96,13 @@ class PublicWebResourceController extends Controller
 
                         case "quantity":
 
-                            foreach(\App\Models\AppTime::where('private', '=', false)->cursor() as $app) {
+                            foreach(\App\Models\AppTime::where('private', '=', false)->where('user_id', '>', 0)->cursor() as $app) {
                                 $collection->push(['name' => $app->appName]);
+                                //echo $app->appName . "\n";
                             }
 
                             $unique = $collection->countBy('name');
+                            //dd($unique);
                             $collectionToDisplay = $unique->sortDesc();;
                             //dd($unique);
 
@@ -123,6 +127,30 @@ class PublicWebResourceController extends Controller
      }
 
 
+     function GetPublicStats(Request $request) {
+
+        $Sessions = \App\Models\Session::where('private', '=', false)->where('time', '>', 299)->where('user_id', '>', 0)->get();
+
+        if($Sessions->count() < 1){
+            return view('viewAllStats', ['readyTotals' => null, 'request' => $request, 'PublicSessions' => true, 'isPrivate' => false]);
+        }
+
+        $totals = collect([]);
+        /*
+        foreach($Sessions as $session) {
+            $totals->push('totaltime', $session->time);
+        }
+        */
+        //dd($Sessions);
+
+        $readyTotals = collect([]);
+        $readyTotals->put('count', $Sessions->count()); //count
+        $readyTotals->put('totaltime', $Sessions->sum('time')); //count
+
+        //dd($readyTotals);
+
+        return view('viewAllStats', ['readyTotals' => $readyTotals, 'request' => $request, 'PublicSessions' => true, 'isPrivate' => false]);
+     }
 
 
 }

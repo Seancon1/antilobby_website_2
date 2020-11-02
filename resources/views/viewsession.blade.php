@@ -1,5 +1,4 @@
 @extends('layout.app')
-@parent
 
  @section('content')
 

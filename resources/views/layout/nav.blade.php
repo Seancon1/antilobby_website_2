@@ -10,4 +10,5 @@
 @auth
 <a class="btn btn-outline-dark" href="{{ URL::to("/api/antilobby/user/sessions/") }}" role="button">All Sessions</a>
 <a class="btn btn-outline-dark" href="{{ URL::to("/api/antilobby/user/program/totals") }}" role="button">Program Totals</a>
+<a class="btn btn-outline-dark" href="{{ URL::to("/api/antilobby/user/sessions/stats") }}" role="button">Stats</a>
 @endauth

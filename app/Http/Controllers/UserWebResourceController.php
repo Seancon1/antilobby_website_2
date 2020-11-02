@@ -169,4 +169,27 @@ class UserWebResourceController extends Controller
      }
 
 
+     function GetStats(Request $request) {
+
+        $Sessions = \App\Models\Session::where('user_id', '=', $request->user()->id)->get();
+
+        if($Sessions->count() < 1){
+            return view('viewAllStats', ['readyTotals' => null, 'request' => $request, 'PublicSessions' => true]);
+        }
+
+        $totals = collect([]);
+        /*
+        foreach($Sessions as $session) {
+            $totals->push('totaltime', $session->time);
+        }
+        */
+
+        $readyTotals = collect([]);
+        $readyTotals->put('count', $Sessions->count()); //count
+        $readyTotals->put('totaltime', $Sessions->sum('time')); //count
+
+        //dd($readyTotals);
+
+        return view('viewAllStats', ['readyTotals' => $readyTotals, 'request' => $request, 'isPrivate' => true]);
+     }
 }
