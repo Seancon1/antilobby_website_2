@@ -42,7 +42,8 @@ Route::middleware('auth:sanctum')->get('antilobby/user/sessions/', 'UserWebResou
 Route::middleware('auth:sanctum')->get('antilobby/user/program/totals', 'UserWebResourceController@GetUserProgramTotals');
 Route::middleware('auth:sanctum')->get('antilobby/user/program/totals/{appName}', 'UserWebResourceController@GetUserProgramSingle');
 Route::middleware('auth:sanctum')->get('antilobby/user/sessions/stats', 'UserWebResourceController@GetStats'); //Private Stats
-
+Route::middleware('auth:sanctum')->get('antilobby/user/sessions/stats', 'UserWebResourceController@GetStats'); //Private Stats
+Route::middleware('auth:sanctum')->get('antilobby/user/settings', 'UserWebResourceController@Settings'); //Private Stats
 
 
 /** Public Chart routes */

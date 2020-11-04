@@ -1,6 +1,6 @@
 
 <h2>Antilobby Resource Hub</h2>
-<div class="alert alert-warning"><p>In order to help protect your data, you now need to make an account to use the features of Antilobby. More features are coming that allow you to share your session and allow them to be displayed on the public sessions page.</p></div>
+<div class="alert alert-warning"><p>In order to help protect your data, you now need to make an account to use the features of Antilobby. More features are coming that will allow you to modify your session privacy.</p></div>
 
 
 <hr>

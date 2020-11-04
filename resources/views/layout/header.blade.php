@@ -20,7 +20,7 @@
 
 
   <div class="this_container">
-
+    <p></p>
     <p>
         <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             <span class="oi oi-bell">Known Issues</span>
@@ -31,7 +31,6 @@
         <div class="card card-body">
             <h3>Known Issues</h3>
             <ul>
-                <li><p><b>Charts</b>: With the recent privacy overhaul with sessions and required user accounts, graphs are not displaying correct data. Currently working to rewrite these graph endpoints shortly.</p></li>
                 <li><p><b>Page not found</b>: There are some redirection issues when you login/logout. Successive login/register attempts break the flow.</p></li>
                 <li><p><b>Password Reset & Email Links</b>: Password reset email links are not correctly generated and do not work.</p></li>
             </ul>

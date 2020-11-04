@@ -6,6 +6,7 @@ use Chartisan\PHP\Chartisan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use Request as GlobalRequest;
 
 class UserWebResourceController extends Controller
@@ -85,11 +86,16 @@ class UserWebResourceController extends Controller
     public function GetSessionSingle(Request $request) {
 
         $fetchedSession = \App\Models\Session::find($request->sessionID)->apps;
-
+        $sessionData = \App\Models\Session::where('sessionValue', '=', $request->sessionID)->get();
+        //dd($sessionData);
+        $canview = ($request->user()->id == $sessionData[0]->user_id) ? true : false;
 
         return view('viewSingleSession', ['userIP' => $request->ip(),
         'sessionID' => $request->sessionID,
-        'FetchedSession' => $fetchedSession
+        'FetchedSession' => $fetchedSession,
+        'request' => $request,
+        'doesUserOwnSession' => $canview,
+        'isSessionPrivate' => $sessionData[0]->private
         ]);
     }
 
@@ -191,5 +197,11 @@ class UserWebResourceController extends Controller
         //dd($readyTotals);
 
         return view('viewAllStats', ['readyTotals' => $readyTotals, 'request' => $request, 'isPrivate' => true]);
+     }
+
+     function Settings(Request $request) {
+
+
+        return view('settings');
      }
 }

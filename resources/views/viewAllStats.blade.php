@@ -13,8 +13,6 @@
 <div class="row">
 
 @if(Auth::check() && $isPrivate)
-<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/user/stats?graph=TopProcesses&show=15&type=time', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes by Time Used', 'legend' => 'false', 'colors' => '#00FFFF'])</div>
-<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/user/stats?graph=TopProcesses&show=10&type=quantity', 'uniqueID' => '2', 'chartType' => 'doughnut', 'chartTitle' => 'Top 10 Processes by Count', 'legend' => 'false', 'colors' => '#00FFFF'])</div>
 <p class="alert alert-info">More graphs coming soon!</p>
 @else
 <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/public/stats?graph=TopProcesses&show=15&type=time', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes by Time Used', 'legend' => 'false'])</div>
@@ -30,7 +28,7 @@
 -->
     <div class="flex-center position-ref full-height">
         <div class="content">
-        <h3>Showing all time {{ $isPrivate ? 'Your' : 'Public' }} Stats</h3>
+        <h3>Showing all {{ $isPrivate ? 'of Your' : 'Public' }} Stats</h3>
             <table class="table table-hover">
                 <thead>
                     <th scope="col">All Time Stats*</th>
