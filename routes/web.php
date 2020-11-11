@@ -76,6 +76,7 @@ Route::middleware('auth:sanctum')->post('antilobby/user/session/update/{id}/{tot
 
 //APPTIME updates
 Route::middleware('auth:sanctum')->post('antilobby/user/apptime/{sessionid}/{appName}/{appTime}','AppTime@update');
+Route::middleware('auth:sanctum')->post('antilobby/user/apptime/v2/{sessionid}/{appName}/{appTime}','AppTime@updateWithSegment');
 Route::middleware('auth:sanctum')->put('antilobby/user/apptime/{sessionid}/{appName}/{appTime}/update','AppTime@update');
 Route::middleware('auth:sanctum')->patch('antilobby/user/apptime/{sessionid}/{appName}/{appTime}/update','AppTime@update');
 

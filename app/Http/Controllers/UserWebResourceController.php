@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Chartisan\PHP\Chartisan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Request as FacadesRequest;
@@ -88,13 +89,13 @@ class UserWebResourceController extends Controller
         $fetchedSession = \App\Models\Session::find($request->sessionID)->apps;
         $sessionData = \App\Models\Session::where('sessionValue', '=', $request->sessionID)->get();
         //dd($sessionData);
-        $canview = ($request->user()->id == $sessionData[0]->user_id) ? true : false;
+        $doesUserOwnSession = (Auth::check()) ? (($request->user()->id == $sessionData[0]->user_id) ? true : false) : false;
 
         return view('viewSingleSession', ['userIP' => $request->ip(),
         'sessionID' => $request->sessionID,
         'FetchedSession' => $fetchedSession,
         'request' => $request,
-        'doesUserOwnSession' => $canview,
+        'doesUserOwnSession' => $doesUserOwnSession,
         'isSessionPrivate' => $sessionData[0]->private
         ]);
     }
@@ -114,6 +115,7 @@ class UserWebResourceController extends Controller
         $type = ($request->has('type')) ? $request->input('type') : null;
         $collectionToDisplay = null;
         $isJSON = ($request->has('json')) ? $request->input('json') : false;
+        $datasetDescription = "Items";
 
         switch($request->input('graph')) {
             case 'TopProcesses':
@@ -136,7 +138,7 @@ class UserWebResourceController extends Controller
                             //echo $name['name'] ." = ". $temp->sum('time') . " | \n";
                             $totalsCollection->put($name['name'], $temp->sum('time'));
                         }
-
+                        $datasetDescription ="Time (Seconds)";
                         $collectionToDisplay = $totalsCollection->sortDesc();
 
 
@@ -150,6 +152,7 @@ class UserWebResourceController extends Controller
 
                             $unique = $collection->countBy('name');
                             $collectionToDisplay = $unique->sortDesc();;
+                            $datasetDescription ="Count";
                             //dd($unique);
 
                         break;
@@ -163,7 +166,7 @@ class UserWebResourceController extends Controller
 
                     $outChart = Chartisan::build()
                         ->labels($collectionToDisplay->keys()->toArray())
-                        ->dataset('Items', $collectionToDisplay->values()->toArray())
+                        ->dataset($datasetDescription, $collectionToDisplay->values()->toArray())
                         ->toJSON();
 
                 }
@@ -177,7 +180,7 @@ class UserWebResourceController extends Controller
 
      function GetStats(Request $request) {
 
-        $Sessions = \App\Models\Session::where('user_id', '=', $request->user()->id)->get();
+        $Sessions = \App\Models\Session::where('user_id', '=', $request->user()->id)->where('time', '>=', 300)->get();
 
         if($Sessions->count() < 1){
             return view('viewAllStats', ['readyTotals' => null, 'request' => $request, 'PublicSessions' => true]);

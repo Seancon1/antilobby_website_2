@@ -15,6 +15,7 @@ class AppTime extends Model
         'id',
         'appName',
         'appTime',
+        'appTimeSpec',
         'user_id',
         'private',
         'created_at',
@@ -26,4 +27,5 @@ class AppTime extends Model
     {
         return $this->belongsTo('App\Models\Session', 'sessionValue', 'sessionValue');
     }
+
 }

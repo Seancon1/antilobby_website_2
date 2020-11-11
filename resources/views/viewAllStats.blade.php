@@ -41,14 +41,14 @@
                 <tbody>
                         <tr>
                             <td>Total Time Recorded:</td>
-                            <td>{{ round(($readyTotals->get('totaltime') /3600), 2) . " hrs" }} {{ "(" . 0 . " ticks)" }}</td>
+                            <td>{{ round(($readyTotals->get('totaltime') /3600), 2) . " hrs" }} {{ "(" . $readyTotals->get('totaltime') . " ticks)" }}</td>
                         </tr>
                         <tr>
-                            <td>Sessions Recorded</td>
+                            <td>Sessions Recorded:</td>
                             <td> {{ $readyTotals->get('count') }}</td>
                         </tr>
                         <tr>
-                            <td>Average time per Session</td>
+                            <td>Average time per Session:</td>
                             <td>{{ round((($readyTotals->get('totaltime') / $readyTotals->get('count'))/ 3600), 2) . " hrs" }}</td>
                         </tr>
                 </tbody>

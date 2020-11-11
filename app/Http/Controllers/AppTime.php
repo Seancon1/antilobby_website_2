@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
+use Request as GlobalRequest;
 
 class AppTime extends Controller
 {
@@ -91,12 +92,75 @@ class AppTime extends Controller
             $apptime->appName = $request->appName;
             $apptime->appTime = $request->appTime;
             $apptime->sessionValue = $request->sessionid;
+            $apptime->id = $request->sessionid;
             $apptime->user_id = $request->user()->id;
             $apptime->private = true;
         }
 
         return ($apptime->save() ? "success" : "error");
 
+    }
+
+    public function updateWithSegment(Request $request)
+    {
+        //PUT/PATCH
+
+        /**
+         * Fetch data segment to save
+         *
+         */
+        $segmentCollection = collect();
+         if($request->input('data-segment')) {
+
+            //echo "Segment" . $request->input('data-segment');
+
+            foreach ($request->input() as $key => $value) {
+                $segmentCollection->put($key, $value);
+            }
+
+            //echo $segmentCollection->toJson();
+         }
+
+        $apptime = \App\Models\AppTime::where([
+            ['sessionValue', '=', $request->sessionid],
+            ['appName', '=', $request->appName]
+        ])->first();
+
+
+        if(!empty($apptime)){
+            $apptime->appTime = $request->appTime; //update any current sessions in progress
+            $tempCollection = collect((json_decode($apptime->appTimeSpec, true)));
+            $apptime->appTimeSpec = $tempCollection->merge($segmentCollection)->toJson();; //merge since 2nd segment
+        } else {
+            $apptime = new \App\Models\AppTime;
+            $apptime->appName = $request->appName;
+            $apptime->appTime = $request->appTime;
+            $apptime->sessionValue = $request->sessionid;
+            $apptime->user_id = $request->user()->id;
+            $apptime->private = true;
+            $apptime->appTimeSpec = $segmentCollection->toJson();
+        }
+
+        return ($apptime->save() ? "success" : "error");
+
+    }
+
+
+    public function utest(Request $request){
+        //echo 'Working...';
+        //dd($request->input());
+        $collection = collect();
+
+        echo "Saving segment" . $request->input('data-segment');
+
+        foreach ($request->input() as $key => $value) {
+            $collection->put($key, $value);
+        }
+
+        echo $collection->toJson();
+
+        //dd($collection);
+        return '';
     }
 
     /**
