@@ -100,6 +100,41 @@ class UserWebResourceController extends Controller
         ]);
     }
 
+
+    /**
+     * Fetch a single session using the {sessionID}
+     * TO-DO: make it detect whether it is public or private & owner is viewing or not
+     */
+    public function GetAppSingle(Request $request) {
+
+        //$fetchedSession = \App\Models\Session::find($request->sessionID)->apps;
+        $programData = \App\Models\AppTime::where('id', '=', $request->apptimeID)->where('sessionValue', '=', $request->sessionID)->first();
+        //dd($sessionData);
+        $doesUserOwnProgram = (Auth::check()) ? (($request->user()->id == $programData[0]->user_id) ? true : false) : false;
+
+        return view('viewSingleProgram', ['userIP' => $request->ip(),
+        'sessionID' => $request->sessionID,
+        'request' => $request,
+        'doesUserOwnProgram' => $doesUserOwnProgram,
+        'isSessionPrivate' => $programData[0]->private
+        ]);
+    }
+
+    public function GetAppSingleJson(Request $request) {
+
+        //$fetchedSession = \App\Models\Session::find($request->sessionID)->apps;
+        $programData = \App\Models\AppTime::where('id', '=', $request->apptimeID)->where('sessionValue', '=', $request->sessionID)->first();
+        //dd($sessionData);
+        $doesUserOwnProgram = (Auth::check()) ? (($request->user()->id == $programData[0]->user_id) ? true : false) : false;
+
+        return view('viewSingleProgram', ['userIP' => $request->ip(),
+        'sessionID' => $request->sessionID,
+        'request' => $request,
+        'doesUserOwnProgram' => $doesUserOwnProgram,
+        'isSessionPrivate' => $programData[0]->private
+        ]);
+    }
+
         /**
      *
      *

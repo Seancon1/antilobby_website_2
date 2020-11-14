@@ -32,6 +32,7 @@ Route::get('antilobby/public/sessions', 'PublicWebResourceController@GetAllPubli
 
 Route::get('antilobby/public/sessions/stats', 'PublicWebResourceController@GetPublicStats'); //Public Stats
 Route::get('antilobby/session/{sessionID}', 'UserWebResourceController@GetSessionSingle'); //Fetch individual session
+Route::get('antilobby/program/{sessionID}/{apptimeID}', 'UserWebResourceController@GetAppSingle'); //Fetch individual app and it's relevant information
 
 
 /** Redirect pages */
@@ -77,6 +78,7 @@ Route::middleware('auth:sanctum')->post('antilobby/user/session/update/{id}/{tot
 //APPTIME updates
 Route::middleware('auth:sanctum')->post('antilobby/user/apptime/{sessionid}/{appName}/{appTime}','AppTime@update');
 Route::middleware('auth:sanctum')->post('antilobby/user/apptime/v2/{sessionid}/{appName}/{appTime}','AppTime@updateWithSegment');
+Route::middleware('auth:sanctum')->post('antilobby/user/apptime/v3/{sessionid}/{appName}/{appTime}','AppTime@updateAppAndDetails');
 Route::middleware('auth:sanctum')->put('antilobby/user/apptime/{sessionid}/{appName}/{appTime}/update','AppTime@update');
 Route::middleware('auth:sanctum')->patch('antilobby/user/apptime/{sessionid}/{appName}/{appTime}/update','AppTime@update');
 

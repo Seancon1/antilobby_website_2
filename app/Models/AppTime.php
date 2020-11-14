@@ -9,10 +9,16 @@ class AppTime extends Model
 {
     protected $table = 'apptime';
 
+        /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
     protected $foreignKey = 'sessionValue';
 
     public $fillable = [
-        'id',
         'appName',
         'appTime',
         'appTimeSpec',
@@ -27,5 +33,11 @@ class AppTime extends Model
     {
         return $this->belongsTo('App\Models\Session', 'sessionValue', 'sessionValue');
     }
+
+    public function hours()
+    {
+        return $this->hasMany('App\Models\ApptimeDetailsHr');
+    }
+
 
 }

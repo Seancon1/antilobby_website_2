@@ -15,6 +15,13 @@
     <script src="https://unpkg.com/chart.js@2.9.3/dist/Chart.min.js"></script>
     <script src="https://unpkg.com/@chartisan/chartjs@^2.1.0/dist/chartisan_chartjs.umd.js"></script>
     @livewireStyles
+    <script>
+        function doToggle(elementIDName) {
+                    var item = document.getElementById(elementIDName).innerHTML;
+                    item = (item == '+' ? '-' : '+');
+                    Console.log("Worked");
+        }
+    </script>
   </head>
   <body style='margin-left: 10px; margin-right: 10px; margin-bottom: 50px;'>
 
