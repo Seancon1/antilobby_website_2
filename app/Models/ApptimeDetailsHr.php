@@ -32,7 +32,7 @@ class ApptimeDetailsHr extends Model
 
     public function app()
     {
-        return $this->belongsTo('App\Models\AppTime');
+        return $this->belongsTo('App\Models\AppTime', 'id', );
     }
 
     public function minutes()

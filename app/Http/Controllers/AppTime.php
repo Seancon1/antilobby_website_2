@@ -144,9 +144,8 @@ class AppTime extends Controller
     }
 
 
-    public function utest(Request $request){
-        //echo 'Working...';
-        //dd($request->input());
+    public function updateAppAndDetails(Request $request){
+
         $collection = collect();
 
         echo "Saving segment" . $request->input('data-segment');
@@ -183,7 +182,7 @@ class AppTime extends Controller
             $apptime->private = true;
             $apptime->save();
             $apptime->refresh();
-            $apptimeID = $apptime->id;
+            $apptimeID = $apptime->id; //set new id for use in saving details
         }
 
         //Update app time details
