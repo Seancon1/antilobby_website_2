@@ -54,6 +54,8 @@ Route::get('antilobby/chart/json/{id}', 'sessionController@chartJSON');
 Route::get('antilobby/chart/public/sessions', 'PublicWebResourceController@GetAllPublicSessions_JSON'); //Main Page Chart
 Route::get('antilobby/chart/public/stats', 'PublicWebResourceController@GetPublicStatsJson'); //Main Page Chart
 
+Route::get('antilobby/chart/public/app/stats/{sessionID}/{apptimeID}', 'UserWebResourceController@GetAppSingleJson'); //Chart json: individual app times - detailed
+
 //** Private User Charts */
 Route::middleware('auth:sanctum')->get('antilobby/chart/user/stats', 'UserWebResourceController@GetUserStatsJson');
 

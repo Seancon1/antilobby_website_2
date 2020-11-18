@@ -33,7 +33,7 @@
                             <tr class="collapse" id="collapsable{{ $app->id }}">
                                 <td colspan="4" >
                                     <div class="card card-body">
-                                    Graphs coming soon!
+                                        @include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/public/app/stats/' . $sessionID. '/'.$app->id, 'uniqueID' => $app->id, 'chartType' => 'bar', 'chartTitle' => '('.$app->appName .') Detailed Usage', 'legend' => 'true'])
                                     </div>
                                 </td>
                             </tr>

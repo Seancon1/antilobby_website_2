@@ -36,7 +36,7 @@ class AppTime extends Model
 
     public function hours()
     {
-        return $this->hasMany('App\Models\ApptimeDetailsHr');
+        return $this->hasMany('App\Models\ApptimeDetailsHr', 'apptime_id', 'id');
     }
 
 

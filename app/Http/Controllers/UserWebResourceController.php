@@ -121,18 +121,40 @@ class UserWebResourceController extends Controller
     }
 
     public function GetAppSingleJson(Request $request) {
-
         //$fetchedSession = \App\Models\Session::find($request->sessionID)->apps;
         $programData = \App\Models\AppTime::where('id', '=', $request->apptimeID)->where('sessionValue', '=', $request->sessionID)->first();
-        //dd($sessionData);
-        $doesUserOwnProgram = (Auth::check()) ? (($request->user()->id == $programData[0]->user_id) ? true : false) : false;
 
-        return view('viewSingleProgram', ['userIP' => $request->ip(),
-        'sessionID' => $request->sessionID,
-        'request' => $request,
-        'doesUserOwnProgram' => $doesUserOwnProgram,
-        'isSessionPrivate' => $programData[0]->private
-        ]);
+        //dd($programData->hours);
+        $defaultCollection = collect([]);
+
+        //Populate the 24hr view with zeros
+        for($hr = 0; $hr < 24; $hr++) {
+            for($mins = 0; $mins < 60; $mins++) {
+                $defaultCollection->put("{$hr}.{$mins}", 0);
+            }
+        }
+
+        //dd($collection);
+        $newCollection = collect([]);
+        foreach($programData->hours as $hr) {
+            foreach($hr->minutes as $mins) {
+                //echo "{$hr->hour}:{$mins->minute} = {$mins->count} |";
+                $newCollection->put("{$hr->hour}.{$mins->minute}", $mins->count);
+            }
+        }
+        //dd($newCollection);
+        //$mergedCollection = $newCollection->merge($defaultCollection);
+        $chartCollection = $defaultCollection->merge($newCollection);
+
+        //dd($mergedCollection);
+
+        $outChart = Chartisan::build()
+        ->labels($chartCollection->keys()->toArray())
+        ->dataset('Seconds Per Minute', $chartCollection->values()->toArray())
+        ->toJSON();
+
+        return $outChart;
+
     }
 
         /**

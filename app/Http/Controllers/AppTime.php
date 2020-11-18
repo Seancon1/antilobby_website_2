@@ -148,7 +148,7 @@ class AppTime extends Controller
 
         $collection = collect();
 
-        echo "Saving segment" . $request->input('data-segment');
+        //echo "Saving segment" . $request->input('data-segment');
 
         foreach ($request->input() as $key => $value) {
 
@@ -188,7 +188,7 @@ class AppTime extends Controller
         //Update app time details
         $this->updateQueryDetails($collection, $apptimeID);
 
-        return '';
+        return 'success';
     }
 
     /**
