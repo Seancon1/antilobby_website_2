@@ -1,12 +1,13 @@
 <x-guest-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
-            <x-jet-authentication-card-logo />
+            <!-- <x-jet-authentication-card-logo /> -->
+            <h1>PrestigeCode</h1>
         </x-slot>
 
         <x-jet-validation-errors class="mb-4" />
 
-        <form method="POST" action="{{ URL::to("/api/register") }}">
+        <form method="POST" action="{{ URL::to("register") }}">
             @csrf
 
             <div>

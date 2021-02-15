@@ -12,11 +12,11 @@
 
 <div class="row">
 
-@if(Auth::check() && $isPrivate)
+@if(Auth::check() && $isPrivate ?? 'false')
 <p class="alert alert-info">More graphs coming soon!</p>
 @else
-<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/public/stats?graph=TopProcesses&show=15&type=time', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes by Time Used', 'legend' => 'false'])</div>
-<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/public/stats?graph=TopProcesses&show=10&type=quantity', 'uniqueID' => '2', 'chartType' => 'doughnut', 'chartTitle' => 'Top 10 Processes by Count', 'legend' => 'false'])</div>
+<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/public/stats?graph=TopProcesses&show=15&type=time', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes by Time Used', 'legend' => 'false'])</div>
+<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/public/stats?graph=TopProcesses&show=10&type=quantity', 'uniqueID' => '2', 'chartType' => 'doughnut', 'chartTitle' => 'Top 10 Processes by Count', 'legend' => 'false'])</div>
 @endif
 </div>
 

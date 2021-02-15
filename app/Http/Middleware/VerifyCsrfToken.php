@@ -13,10 +13,14 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
-        '/antilobby/sanctum/*',
-        '/antilobby/user/get/',
-        '/antilobby/user/session/*',
-        '/antilobby/user/apptime/*',
+        '/sanctum/*',
+        '/get/*',
+        '/user/*',
+        '/user/apptime/*',
+        '/session/*',
+        '/user/sesson/*',
+        '/user/get/*',
+        '/apptime/*',
 
     ];
 }

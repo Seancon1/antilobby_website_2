@@ -3,8 +3,8 @@
  @section('content')
 
 <div class="row">
-    <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/user/stats?graph=TopProcesses&show=15&type=time', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes (Time Used)', 'legend' => 'false', 'colors' => '#1B5CB5'])</div>
-    <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://www.prestigecode.com/api/antilobby/chart/user/stats?graph=TopProcesses&show=15&type=quantity', 'uniqueID' => '2', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes (Count)', 'legend' => 'false', 'colors' => '#1B5CB5'])</div>
+    <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=TopProcesses&show=15&type=time', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes (Time Used)', 'legend' => 'false', 'colors' => '#1B5CB5'])</div>
+    <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=TopProcesses&show=15&type=quantity', 'uniqueID' => '2', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes (Count)', 'legend' => 'false', 'colors' => '#1B5CB5'])</div>
 </div>
 
     <!--
@@ -21,7 +21,7 @@
                     @php
                      $sortFunc = ($request->input('time') == 'asc') ? 'desc' : 'asc';
                     @endphp
-                    <th scope="col"><a href="{{ url("api/antilobby/user/program/totals?time=" . $sortFunc) }}">Total Time</a></th>
+                    <th scope="col"><a href="{{ url("user/program/totals?time=" . $sortFunc) }}">Total Time</a></th>
                     <th scope="col">-</th>
                     </tr>
                 </thead>

@@ -42,8 +42,7 @@ return [
     |
     */
 
-    'asset_url'  => 'https://www.prestigecode.com/api/',
-    'asset_base_url'  => 'https://www.prestigecode.com/api/',
+    'asset_url'  => null,
 
     /*
     |--------------------------------------------------------------------------
