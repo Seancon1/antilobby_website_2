@@ -13,10 +13,23 @@
 <div class="row">
 
 @if(Auth::check() && $isPrivate ?? 'false')
-<p class="alert alert-info">More graphs coming soon!</p>
+<!-- User only graphs -->
+<div class="col-md-12">
+    <h3>Members Only Data</h3>   
+</div>
+
+<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=commonHour', 'uniqueID' => '3', 'chartType' => 'bar', 'chartTitle' => 'Most Common Hour', 'legend' => 'false', 'colors'=> 'purple'])</div>
+<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=commonMinute', 'uniqueID' => '4', 'chartType' => 'bar', 'chartTitle' => 'Most Common Minute', 'legend' => 'false', 'colors'=> 'purple'])</div>
+
+<div class="col-md-12">
+    <p style="color: gray;">The data above is collected by all sessions but only available to members. Profile specific times will be available in the future.</p>
+</div>
 @else
+
+<!-- Public Graphs-->
 <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/public/stats?graph=TopProcesses&show=15&type=time', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes by Time Used', 'legend' => 'false'])</div>
 <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/public/stats?graph=TopProcesses&show=10&type=quantity', 'uniqueID' => '2', 'chartType' => 'doughnut', 'chartTitle' => 'Top 10 Processes by Count', 'legend' => 'false'])</div>
+
 @endif
 </div>
 

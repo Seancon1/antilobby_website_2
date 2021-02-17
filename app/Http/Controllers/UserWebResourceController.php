@@ -168,17 +168,47 @@ class UserWebResourceController extends Controller
     function GetUserStatsJson(Request $request) {
 
         $outChart = null;
-        $quantifier = ($request->has('show')) ? $request->input('show') : '10' ;
+        $quantifier = ($request->has('show')) ? $request->input('show') : '10';
         $type = ($request->has('type')) ? $request->input('type') : null;
         $collectionToDisplay = null;
         $isJSON = ($request->has('json')) ? $request->input('json') : false;
         $datasetDescription = "Items";
 
-        switch($request->input('graph')) {
-            case 'TopProcesses':
+        //$processes = \App\Models\AppTime::where('private', '=', false)->get();
+        $collection = collect([]); //empty collection
 
-                //$processes = \App\Models\AppTime::where('private', '=', false)->get();
-                $collection = collect([]); //empty collection
+        switch($request->input('graph')) {
+
+            //Count(*) for each hour, 0-24
+            case 'commonHour':    
+
+                for($h = 0; $h <= 23; $h++){
+                    $hourCount = \App\Models\ApptimeDetailsHr::where('hour', $h)->count();
+                    $collection->push($hourCount);
+                }
+                
+                $quantifier = null;
+                //$betaView = true;
+                $datasetDescription = "Quantity Per Hour";
+                $collectionToDisplay = $collection;
+                //dd($collectionToDisplay);
+
+            break;
+
+            case 'commonMinute':
+
+                for($m = 0; $m <= 60; $m++){
+                    $minCount = \App\Models\ApptimeDetailsMin::where('minute', $m)->count();
+                    $collection->push($minCount);
+                }
+                
+                $quantifier = null;
+                $datasetDescription = "Quantity Per Minute";
+                $collectionToDisplay = $collection;
+
+            break;    
+            
+            case 'TopProcesses':
 
                 switch($type) {
 
@@ -215,20 +245,34 @@ class UserWebResourceController extends Controller
                         break;
                 }
 
-
-
-                if(isset($collectionToDisplay)) {
-
-                    $collectionToDisplay = $collectionToDisplay->splice(0, $quantifier); //Quantifier is POST['show']/$request->input('show')
-
-                    $outChart = Chartisan::build()
-                        ->labels($collectionToDisplay->keys()->toArray())
-                        ->dataset($datasetDescription, $collectionToDisplay->values()->toArray())
-                        ->toJSON();
-
-                }
-
             break;
+        }
+
+        if(isset($betaView)) {
+
+            $outChart = Chartisan::build();
+
+            foreach($collection as $key => $value){
+                $outChart->dataset("Count", (array) $value);
+            }
+
+            $outChart->labels((array) $datasetDescription);
+            
+            return $outChart->toJSON();
+        }
+
+        if(isset($collectionToDisplay)) {
+
+            //Null is forced where limiting the returned number of items is wanted
+            if(!is_null($quantifier)) {
+                           $collectionToDisplay = $collectionToDisplay->splice(0, $quantifier); //Quantifier is POST['show']/$request->input('show')
+            }
+
+            $outChart = Chartisan::build()
+                ->labels($collectionToDisplay->keys()->toArray())
+                ->dataset($datasetDescription, $collectionToDisplay->values()->toArray())
+                ->toJSON();
+
         }
 
         return $outChart;

@@ -24,7 +24,7 @@
                     @if($doesUserOwnSession || !$isSessionPrivate)
                         @foreach ($FetchedSession as $app)
 
-                            <tr data-toggle="collapse" data-target="#collapsable{{ $app->id }}" aria-expanded="false" aria-controls="collapsable{{ $app->id }}" onclick="doToggle('plusminus{{ $app->id }}')">
+                            <tr data-toggle="collapse" data-target="#collapsable{{ $app->id }}" aria-expanded="false" aria-controls="collapsable" onclick="doToggle('plusminus{{ $app->id }}')">
                                 <th scope="row" id='plusminus{{ $app->id }}'>+</th>
                                     <td>{{ $app->appName }}</td>
                                     <td>{{ gmdate("H:i:s", $app->appTime) }}</td>
