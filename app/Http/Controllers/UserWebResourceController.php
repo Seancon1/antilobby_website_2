@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ApptimeDetailsHr;
 use Chartisan\PHP\Chartisan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -187,6 +188,65 @@ class UserWebResourceController extends Controller
                     $collection->push($hourCount);
                 }
                 
+                $quantifier = null;
+                //$betaView = true;
+                $datasetDescription = "Quantity Per Hour";
+                $collectionToDisplay = $collection;
+                //dd($collectionToDisplay);
+
+            break;
+
+            case 'commonHourPersonal':    
+
+            
+                /*
+                for($h = 0; $h <= 23; $h++){
+                    $hourCount = \App\Models\ApptimeDetailsHr::where('hour', $h)->count();
+                    $collection->push($hourCount);
+                }
+                */
+                $userAppIDs = collect([]);
+                $countedHours = collect([]);
+                
+                //populate all user owned ids
+                
+                foreach(\App\Models\AppTime::where('user_id', '=', $request->user()->id)->cursor() as $app) {
+                    $userAppIDs->push(['appID' => $app->id]);
+                }
+                
+                //$userAppIDs = \App\Models\Session::where($request->user()->id, 'user_id')->apps();
+                //dd($userAppIDs);
+
+                $hourCollection = collect([]);
+
+                //Go through and collect all hour commonalities
+                foreach($userAppIDs as $idInspect) {
+                    
+                    $hoursOfID = \App\Models\AppTime::find($idInspect['appID'])->hours()->get();
+                    //dd($hoursOfID);
+                    //$collection->push($hoursOfID->);
+                    
+                    foreach($hoursOfID as $item) {
+                        //dd($item);
+                        //echo $item['hour'];
+                        $hourCollection->push($item['hour']);
+                    }
+                    
+                }
+
+                //count now
+                $collection = $hourCollection->countBy();
+
+                //fill any missing hours
+                for($i = 0; $i < 24; $i++){
+                    if(!$collection->has($i)){
+                        $collection->put($i, 0);
+                    }
+                }
+                $collection = $collection->sortKeys();
+
+                //dd($collection);
+            
                 $quantifier = null;
                 //$betaView = true;
                 $datasetDescription = "Quantity Per Hour";
