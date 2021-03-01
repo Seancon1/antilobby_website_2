@@ -122,7 +122,13 @@ class UserWebResourceController extends Controller
     }
 
     public function GetAppSingleJson(Request $request) {
-        //$fetchedSession = \App\Models\Session::find($request->sessionID)->apps;
+        $startTimeCollection = collect([]);
+        $sessionStartTime = \App\Models\Session::find($request->sessionID)->first()->created_at;
+        $startTimeCollection->put("{$sessionStartTime->format("h.i")}", 60);
+    
+       //dd($startTimeCollection);
+
+
         $programData = \App\Models\AppTime::where('id', '=', $request->apptimeID)->where('sessionValue', '=', $request->sessionID)->first();
 
         //dd($programData->hours);
@@ -131,7 +137,8 @@ class UserWebResourceController extends Controller
         //Populate the 24hr view with zeros
         for($hr = 0; $hr < 24; $hr++) {
             for($mins = 0; $mins < 60; $mins++) {
-                $defaultCollection->put("{$hr}.{$mins}", 0);
+                $modifiedMin = $mins < 10 ? '0'.$mins : $mins;
+                $defaultCollection->put("{$hr}.{$modifiedMin}", 0);
             }
         }
 
@@ -140,18 +147,23 @@ class UserWebResourceController extends Controller
         foreach($programData->hours as $hr) {
             foreach($hr->minutes as $mins) {
                 //echo "{$hr->hour}:{$mins->minute} = {$mins->count} |";
-                $newCollection->put("{$hr->hour}.{$mins->minute}", $mins->count);
+                //modifiedMin changes format to 01,02 ... 09, 10, preceding 0 for everything under 10
+                $modifiedMin = $mins->minute < 10 ? '0'.$mins->minute : $mins->minute;
+                $newCollection->put("{$hr->hour}.{$modifiedMin}", $mins->count);
             }
         }
         //dd($newCollection);
         //$mergedCollection = $newCollection->merge($defaultCollection);
         $chartCollection = $defaultCollection->merge($newCollection);
 
-        //dd($mergedCollection);
+        //dd($chartCollection);
+        $startTimeCollection = $defaultCollection->merge($startTimeCollection);
+        //dd($startTimeCollection);
 
         $outChart = Chartisan::build()
-        ->labels($chartCollection->keys()->toArray())
+        ->labels($chartCollection->keys()->toArray(), $startTimeCollection->keys()->toArray())
         ->dataset('Seconds Per Minute', $chartCollection->values()->toArray())
+        ->dataset('Start Time', $startTimeCollection->values()->toArray())
         ->toJSON();
 
         return $outChart;
@@ -267,6 +279,30 @@ class UserWebResourceController extends Controller
                 $collectionToDisplay = $collection;
 
             break;    
+
+            case 'commonDayOfWeek':
+                //prefill so I can just append a count to the value
+                $dayOfWeekTotals = [
+                    'Monday' => 0,
+                    'Tuesday' => 0,
+                    'Wednesday' => 0,
+                    'Thursday' => 0,
+                    'Friday' => 0,
+                    'Saturday' => 0,
+                    'Sunday' => 0,
+                ];
+
+                //fetch all of user's session creation dates, iterate through them using a pointer. Append to current count
+                //using Carbon instance from Laravel Eloquent models
+                 
+                foreach(\App\Models\Session::where('user_id', '=', $request->user()->id)->cursor() as $session) {
+                    $dayOfWeekTotals[$session->created_at->format('l')]++;
+                }
+                
+                //dd($dayOfWeekTotals);
+                $collectionToDisplay = collect($dayOfWeekTotals);
+
+            break;
             
             case 'TopProcesses':
 

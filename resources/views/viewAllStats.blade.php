@@ -17,9 +17,9 @@
 <div class="col-md-12">
     <h3>Members Only Data</h3>   
 </div>
-
-<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=commonHourPersonal', 'uniqueID' => '3', 'chartType' => 'bar', 'chartTitle' => 'Your Most Common Hours', 'legend' => 'false', 'colors'=> 'purple'])</div>
-<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=commonMinute', 'uniqueID' => '4', 'chartType' => 'bar', 'chartTitle' => 'Public Most Common Minute', 'legend' => 'false', 'colors'=> 'purple'])</div>
+<div class="col-md-12">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=commonDayOfWeek', 'uniqueID' => '5', 'chartType' => 'bar', 'chartTitle' => 'Your Most Common Days', 'legend' => 'true', 'colors'=> 'purple, red'])</div>
+<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=commonHourPersonal', 'uniqueID' => '3', 'chartType' => 'bar', 'chartTitle' => 'Your Most Common Hours', 'legend' => 'false', 'colors'=> 'purple, red'])</div>
+<div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=commonMinute', 'uniqueID' => '4', 'chartType' => 'bar', 'chartTitle' => 'Public Most Common Minute', 'legend' => 'false', 'colors'=> 'purple, red'])</div>
 
 <div class="col-md-12">
     <p style="color: gray;">The data above is collected by all of your sessions. The right graph is a sum of all public sessions.</p>
