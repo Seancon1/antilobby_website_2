@@ -17,9 +17,43 @@
 <div class="col-md-12">
     <h3>Members Only Data</h3>   
 </div>
-<div class="col-md-12">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=commonDayOfWeek', 'uniqueID' => '5', 'chartType' => 'bar', 'chartTitle' => 'Your Most Common Days', 'legend' => 'true', 'colors'=> 'purple, red'])</div>
+<div class="col-md-12">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=commonDayOfWeek', 'uniqueID' => '5', 'chartType' => 'bar', 'chartTitle' => 'Your Most Common Days', 'legend' => 'false', 'colors'=> 'purple, red'])</div>
 <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=commonHourPersonal', 'uniqueID' => '3', 'chartType' => 'bar', 'chartTitle' => 'Your Most Common Hours', 'legend' => 'false', 'colors'=> 'purple, red'])</div>
 <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=commonMinute', 'uniqueID' => '4', 'chartType' => 'bar', 'chartTitle' => 'Public Most Common Minute', 'legend' => 'false', 'colors'=> 'purple, red'])</div>
+
+<hr class="divider" />
+
+<div class="col-md-12 d-flex justify-content-center">
+    <h3>Activity Overview</h3>
+</div>
+<div class="col-md-12">
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">Graph #1 coming soon
+            @include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=', 'uniqueID' => '6', 'chartType' => 'bar', 'chartTitle' => 'Weekly', 'legend' => 'false'])
+        </div>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">Graph #2 comnig soon
+            @include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=', 'uniqueID' => '7', 'chartType' => 'bar', 'chartTitle' => 'Monthly', 'legend' => 'false'])
+
+        </div>
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">Graph #3 coming soon
+            @include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=', 'uniqueID' => '8', 'chartType' => 'bar', 'chartTitle' => 'Yearly', 'legend' => 'false'])
+
+        </div>
+    </div>
+</div>
+<div class="col-md-12 d-flex justify-content-center">
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Weekly</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Monthly</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Yearly</a>
+        </li>
+    </ul>
+</div>
 
 <div class="col-md-12">
     <p style="color: gray;">The data above is collected by all of your sessions. The right graph is a sum of all public sessions.</p>
@@ -29,7 +63,11 @@
 <!-- Public Graphs-->
 <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/public/stats?graph=TopProcesses&show=15&type=time', 'uniqueID' => '1', 'chartType' => 'doughnut', 'chartTitle' => 'Top 15 Processes by Time Used', 'legend' => 'false'])</div>
 <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/public/stats?graph=TopProcesses&show=10&type=quantity', 'uniqueID' => '2', 'chartType' => 'doughnut', 'chartTitle' => 'Top 10 Processes by Count', 'legend' => 'false'])</div>
-
+@guest
+<div class="col-md-12">
+    <p class="alert alert-info">To get more in-depth information, you'll need an account. Go ahead and <a href="/register">create</a> an account, and start tracking!</p>
+</div>
+@endguest
 @endif
 </div>
 

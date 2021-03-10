@@ -59,9 +59,11 @@ class UserWebResourceController extends Controller
 
         $userSessions = \App\Models\User::find($request->user()->id)
             ->getsessions()
-            ->where('time','>', 299)
+            ->where('time','>=', 300)
             ->orderByDesc('created_at')
             ->paginate(20);
+
+            //dd($userSessions);
 
         if($request->has('json') && $request->input('json')) {
             $chartCollection = collect([]);
@@ -75,8 +77,6 @@ class UserWebResourceController extends Controller
 
             return $outChart;
         }
-
-        $userSessions->setPath('/api/antilobby/user/sessions');
 
         return view('viewSessionOverview', ['FetchedSessions' => $userSessions, 'request' => $request, 'PublicSessions' => false]);
     }
@@ -210,7 +210,6 @@ class UserWebResourceController extends Controller
 
             case 'commonHourPersonal':    
 
-            
                 /*
                 for($h = 0; $h <= 23; $h++){
                     $hourCount = \App\Models\ApptimeDetailsHr::where('hour', $h)->count();
@@ -295,13 +294,25 @@ class UserWebResourceController extends Controller
                 //fetch all of user's session creation dates, iterate through them using a pointer. Append to current count
                 //using Carbon instance from Laravel Eloquent models
                  
-                foreach(\App\Models\Session::where('user_id', '=', $request->user()->id)->cursor() as $session) {
+                foreach(\App\Models\Session::where('user_id', '=', $request->user()->id)
+                ->where('time', '>', 300)
+                ->cursor() as $session) {
                     $dayOfWeekTotals[$session->created_at->format('l')]++;
                 }
                 
                 //dd($dayOfWeekTotals);
                 $collectionToDisplay = collect($dayOfWeekTotals);
 
+            break;
+
+            //Output graph to shows most common week out of 52 weeks
+            case 'commonWeek':
+            
+            break;
+
+            //Output graph that shows most common month out of the year. Current month being the end of the graph
+            case 'commonMonth':
+            
             break;
             
             case 'TopProcesses':
@@ -341,6 +352,29 @@ class UserWebResourceController extends Controller
                         break;
                 }
 
+            break;
+
+            case 'demo':
+            default:
+            
+            $outChart = Chartisan::build();
+            
+            for($section = 0; $section < rand(5,10); $section++) {
+
+                $collection = collect([]);
+                $random = rand(1,100);
+
+                for($abc = 0; $abc < $random; $abc++) {
+                    $collection->put("".rand(1,100), rand(0, 1000));
+                }
+                
+                
+                $outChart->labels($collection->keys()->toArray())
+                ->dataset("DemoSection".$section, $collection->values()->toArray());
+            }
+
+            return $outChart->toJSON();
+                
             break;
         }
 

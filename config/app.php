@@ -52,9 +52,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://www.prestigecode.com/api/'),
-    'asset_url' => env('ASSET_URL', "https://www.prestigecode.com/api/"),
-    'asset_base_url' => env('ASSET_URL', "https://www.prestigecode.com/api/"),
+    'url' => env('APP_URL', 'https://antilobby.prestigecode.com/'),
+    'asset_url' => env('ASSET_URL', "https://antilobby.prestigecode.com/"),
+    'asset_base_url' => env('ASSET_URL', "https://antilobby.prestigecode.com/"),
 
     /*
     |--------------------------------------------------------------------------

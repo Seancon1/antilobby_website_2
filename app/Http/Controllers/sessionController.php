@@ -101,7 +101,7 @@ class SessionController extends Controller
                 ->dataset('Sample 2', [3, 2, 1]);
 
         */
-        $sentURL = "/api/antilobby/chart/json/1";
+        $sentURL = "chart/json/1";
 
         return view('charts.chart', ['json' => false, 'sentURL' => $sentURL, 'chartData' => null, 'passedData' => $request->val]);
     }

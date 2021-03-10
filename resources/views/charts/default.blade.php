@@ -52,7 +52,7 @@
                   @endforeach
                 ])
                 @else
-                .colors(['green', 'red', 'blue'])
+                .colors(['green', 'red', 'blue', 'purple', 'yellow', 'grey', 'black','brown','orange','pink'])
               @endif
               ,
         })

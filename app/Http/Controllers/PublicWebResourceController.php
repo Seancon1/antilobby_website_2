@@ -46,9 +46,12 @@ class PublicWebResourceController extends Controller
      */
 
     public function GetAllPublicSessions(Request $request) {
-        $publicSessions = \App\Models\Session::where('private', '=', false)->where('time', '>', 299)->where('user_id', '>', 0)->orderByDesc('created_at')->paginate(20);
-        $publicSessions ->setPath('/api/antilobby/public/sessions');
-
+        $publicSessions = \App\Models\Session::where('private', '=', false)
+        ->where('time', '>', 299)
+        ->where('user_id', '>', 0)
+        ->orderByDesc('created_at')
+        ->paginate(20);
+        
         return view('viewSessionOverview', ['FetchedSessions' => $publicSessions, 'userIP' => $request->ip(), 'PublicSessions' => true]);
     }
 
