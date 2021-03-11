@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Request as GlobalRequest;
+use Carbon\Carbon;
 
 class UserWebResourceController extends Controller
 {
@@ -305,13 +306,55 @@ class UserWebResourceController extends Controller
 
             break;
 
-            //Output graph to shows most common week out of 52 weeks
-            case 'commonWeek':
-            
+            //Output graph to show most common week out of 52 weeks
+            case 'overview_week':
+                //$outChart = Chartisan::build();
+                $weekCollection = collect([]);
+                $currentTime = Carbon::now();
+                
+                //fetch all sessions in the last 7 days
+                /*
+                $sessionsInRange = \App\Models\Session::where('user_id', '=', $request->user()->id)
+                ->whereBetween('created_at', [$currentTime->subtract(7, "day"), $currentTime->now()])->get();
+                */
+                //dd($currentTime);
+
+                //Create a week collection starting with current day at index 7, with possible range of (1-7)
+                for($d = 7, $a = 0; $d > 0; $d--, $a++) {
+                    $range = ($d == 7) ? Carbon::now() : Carbon::now()->subtract($a,'day');
+                    
+                    //currently grabbing anything with more than 0 seconds recorded (due to application generating 2 session ids)
+                    $sessionsInRange = \App\Models\Session::where('user_id', '=', $request->user()->id)
+                    ->where('time', '>', 0)
+                    ->where('created_at', 'like', "%{$range->format("m-d")}%")->get();
+                    
+                    //Base count for each range
+                    $sessionInDateRangeCount = 0;
+
+                    if(!$sessionsInRange->isEmpty()) {
+                        /* loop through each session of the range and append the amount of apps tracked
+                        * this is done incase user has multiple sessions per day
+                        */
+                        foreach($sessionsInRange as $session) {
+                            $sessionInDateRangeCount += $session->apps()->count();
+                        }
+                    }
+                    //echo "{$range->format('l')} ({$range->format("m-d")}) - {$sessionInDateRangeCount} |";
+                    $weekCollection->put("{$range->format('l')} ({$range->format("m-d")})", "{$sessionInDateRangeCount}");
+                }
+
+                $datasetDescription = "Process Count";
+                
+                $collectionToDisplay = $weekCollection->reverse();
+
             break;
 
             //Output graph that shows most common month out of the year. Current month being the end of the graph
-            case 'commonMonth':
+            case 'overview_month':
+            
+            break;
+
+            case 'overview_year':
             
             break;
             
@@ -357,6 +400,7 @@ class UserWebResourceController extends Controller
             case 'demo':
             default:
             
+            //Generate random data to be displayed
             $outChart = Chartisan::build();
             
             for($section = 0; $section < rand(5,10); $section++) {
