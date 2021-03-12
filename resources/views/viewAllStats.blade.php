@@ -29,15 +29,13 @@
 <div class="col-md-12">
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-            @include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=overview_week', 'uniqueID' => '6', 'chartType' => 'bar', 'chartTitle' => 'The Past Week', 'legend' => 'false', 'colors' => '#995CB1'])
+            @include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=overview&type=week', 'uniqueID' => '6', 'chartType' => 'bar', 'chartTitle' => 'The Past Week', 'legend' => 'false', 'colors' => '#995CB1'])
         </div>
-        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"><b>Graph #2 coming soon</b>
-            @include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=', 'uniqueID' => '7', 'chartType' => 'bar', 'chartTitle' => '(DEMO) Monthly', 'legend' => 'false'])
-
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            @include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=overview&type=month', 'uniqueID' => '7', 'chartType' => 'bar', 'chartTitle' => 'Monthly', 'legend' => 'false', 'colors' => '#995CB1'])
         </div>
-        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab"><b>Graph #3 coming soon</b>
-            @include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=', 'uniqueID' => '8', 'chartType' => 'bar', 'chartTitle' => '(DEMO) Yearly', 'legend' => 'false'])
-
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+            @include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=overview&type=year', 'uniqueID' => '8', 'chartType' => 'bar', 'chartTitle' => 'Yearly', 'legend' => 'false', 'colors' => '#995CB1'])
         </div>
     </div>
 </div>

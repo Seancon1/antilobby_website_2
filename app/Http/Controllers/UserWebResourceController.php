@@ -182,7 +182,7 @@ class UserWebResourceController extends Controller
     function GetUserStatsJson(Request $request) {
 
         $outChart = null;
-        $quantifier = ($request->has('show')) ? $request->input('show') : '10';
+        $quantifier = ($request->has('show')) ? $request->input('show') : null;
         $type = ($request->has('type')) ? $request->input('type') : null;
         $collectionToDisplay = null;
         $isJSON = ($request->has('json')) ? $request->input('json') : false;
@@ -307,9 +307,9 @@ class UserWebResourceController extends Controller
             break;
 
             //Output graph to show most common week out of 52 weeks
-            case 'overview_week':
+            case 'overview':
                 //$outChart = Chartisan::build();
-                $weekCollection = collect([]);
+                $rangeCollection = collect([]);
                 $currentTime = Carbon::now();
                 
                 //fetch all sessions in the last 7 days
@@ -319,17 +319,33 @@ class UserWebResourceController extends Controller
                 */
                 //dd($currentTime);
 
+                switch($type) {
+                    case 'month':
+                        $timeFrameModifier = 31; //may have to change this depending on certain months
+                        break;
+                    case 'year':
+                        $timeFrameModifier = 365;
+                        break;
+                    case 'week':
+                    default:
+                        $timeFrameModifier = 7;
+                    break;
+                }
+
                 //Create a week collection starting with current day at index 7, with possible range of (1-7)
-                for($d = 7, $a = 0; $d > 0; $d--, $a++) {
-                    $range = ($d == 7) ? Carbon::now() : Carbon::now()->subtract($a,'day');
+                for($d = $timeFrameModifier, $a = 0; $d > 0; $d--, $a++) {
+                    
+                    //modify the first date as NOW, otherwise subtract a day for each iteration
+                    $range = ($d == $timeFrameModifier) ? Carbon::now() : Carbon::now()->subtract($a,'day');
                     
                     //currently grabbing anything with more than 0 seconds recorded (due to application generating 2 session ids)
                     $sessionsInRange = \App\Models\Session::where('user_id', '=', $request->user()->id)
                     ->where('time', '>', 0)
                     ->where('created_at', 'like', "%{$range->format("m-d")}%")->get();
-                    
+
                     //Base count for each range
                     $sessionInDateRangeCount = 0;
+
 
                     if(!$sessionsInRange->isEmpty()) {
                         /* loop through each session of the range and append the amount of apps tracked
@@ -340,12 +356,17 @@ class UserWebResourceController extends Controller
                         }
                     }
                     //echo "{$range->format('l')} ({$range->format("m-d")}) - {$sessionInDateRangeCount} |";
-                    $weekCollection->put("{$range->format('l')} ({$range->format("m-d")})", "{$sessionInDateRangeCount}");
+                    $rangeCollection->put("{$range->format('l')} ({$range->format("m-d")})", "{$sessionInDateRangeCount}");
+
+                    //echo "Range: {$range->format('l')} ({$range->format("m-d")}), Count: {$sessionInDateRangeCount} |" . PHP_EOL;
                 }
 
                 $datasetDescription = "Process Count";
-                
-                $collectionToDisplay = $weekCollection->reverse();
+                $quantifier = null; //for now set quantifier to null to prevent splicing
+                $collectionToDisplay = $rangeCollection->reverse();
+                //dd($collectionToDisplay, $collectionToDisplay->keys()->toArray(), $collectionToDisplay->values()->toArray());
+
+                //dd($collectionToDisplay);
 
             break;
 
@@ -441,6 +462,8 @@ class UserWebResourceController extends Controller
             if(!is_null($quantifier)) {
                            $collectionToDisplay = $collectionToDisplay->splice(0, $quantifier); //Quantifier is POST['show']/$request->input('show')
             }
+
+            //dd($collectionToDisplay, $collectionToDisplay->keys()->toArray(), $collectionToDisplay->values()->toArray());
 
             $outChart = Chartisan::build()
                 ->labels($collectionToDisplay->keys()->toArray())
