@@ -14,3 +14,7 @@
 <a class="btn btn-outline-dark" href="{{ URL::to("user/sessions/stats") }}" role="button">Stats</a>
 </div>
 @endauth
+
+<div class="btn-group" role="group" aria-label="...">
+    <a class="btn btn-outline-dark" href="{{ URL::to("about") }}" role="button">About</a>
+</div>

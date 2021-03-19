@@ -35,6 +35,9 @@ Route::get('public/sessions/stats', 'PublicWebResourceController@GetPublicStats'
 Route::get('session/{sessionID}', 'UserWebResourceController@GetSessionSingle'); //Fetch individual session
 Route::get('program/{sessionID}/{apptimeID}', 'UserWebResourceController@GetAppSingle'); //Fetch individual app and it's relevant information
 
+Route::get('about', 'VersionController@DisplayAbout'); //Fetch individual app and it's relevant information
+Route::get('download', 'VersionController@DisplayDownload'); //Fetch individual app and it's relevant information
+
 
 /** Redirect pages */
 

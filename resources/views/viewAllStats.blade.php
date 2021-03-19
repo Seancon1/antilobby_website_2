@@ -15,7 +15,11 @@
 @if(Auth::check() && $isPrivate ?? 'false')
 <!-- User only graphs -->
 <div class="col-md-12">
-    <h3>Members Only Data</h3>   
+    <h3>Your Data</h3>   
+</div>
+
+<div class="col-md-12 d-flex justify-content-center">
+    <h4>Overall Most Common</h3>   
 </div>
 <div class="col-md-12">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=commonDayOfWeek', 'uniqueID' => '5', 'chartType' => 'bar', 'chartTitle' => 'Your Most Common Days', 'legend' => 'false', 'colors'=> 'purple, red'])</div>
 <div class="col-md-6">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=commonHourPersonal', 'uniqueID' => '3', 'chartType' => 'bar', 'chartTitle' => 'Your Most Common Hours', 'legend' => 'false', 'colors'=> 'purple, red'])</div>
@@ -24,7 +28,7 @@
 <hr class="divider" />
 
 <div class="col-md-12 d-flex justify-content-center">
-    <h3>Activity Overview</h3>
+    <h4>Activity Overview</h3>
 </div>
 <div class="col-md-12">
     <div class="tab-content" id="pills-tabContent">
@@ -32,10 +36,10 @@
             @include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=overview&type=week', 'uniqueID' => '6', 'chartType' => 'bar', 'chartTitle' => 'The Past Week', 'legend' => 'false', 'colors' => '#995CB1'])
         </div>
         <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-            @include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=overview&type=month', 'uniqueID' => '7', 'chartType' => 'bar', 'chartTitle' => 'Monthly', 'legend' => 'false', 'colors' => '#995CB1'])
+            @include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=overview&type=month', 'uniqueID' => '7', 'chartType' => 'bar', 'chartTitle' => 'The Past Month', 'legend' => 'false', 'colors' => '#995CB1'])
         </div>
         <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-            @include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=overview&type=year', 'uniqueID' => '8', 'chartType' => 'bar', 'chartTitle' => 'Yearly', 'legend' => 'false', 'colors' => '#995CB1'])
+            @include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/user/stats?graph=overview&type=year', 'uniqueID' => '8', 'chartType' => 'bar', 'chartTitle' => 'The Past Year', 'legend' => 'false', 'colors' => '#995CB1'])
         </div>
     </div>
 </div>
