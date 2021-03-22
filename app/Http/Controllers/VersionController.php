@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class VersionController extends Controller
 {
@@ -16,10 +18,18 @@ class VersionController extends Controller
         return view('about');
     }
 
-    public function DisplayDownload()
+    public function DisplayDownload(Request $request)
     {
-        $allVersions = \App\Models\AppVersion::where('id', '>', '0')->get();
-        return view('download', ['appVersions' => $allVersions]);
+        $isAdmin = false;
+
+        //dd($request->user()->getNameAttribute, $request->user()->getName, $request->user()->name);
+        if(Auth::check()) {
+           $isAdmin = ($request->user()->account_type >= 9000) ? true : false;
+        }
+        //$isAdmin = ($request->user()->account_type >= 9000) ? true : false;
+        $currentVersion = \App\Models\AppVersion::where('id', '>', '0')->orderByDesc('version')->first();
+        $allVersions = \App\Models\AppVersion::where('id', '>', '0')->orderByDesc('version')->skip(1)->take(5)->get();
+        return view('download', ['appVersions' => $allVersions, 'currentVersion' => $currentVersion, 'isAdmin' => $isAdmin]);
     }
     /**
      * Display a listing of the resource.
@@ -49,7 +59,32 @@ class VersionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $file = $request->file("file");
+
+        //dd($request);
+        //check if admin first
+        $isAdmin = ($request->user()->account_type >= 9000) ? true : false;
+
+        if(!$isAdmin)
+            return "You cannot do this operation.";
+
+        if($request->file()) {
+            $fileName = $request->file->getClientOriginalName();
+            $filePath = $request->file('file')->storeAs('versions', $fileName, 'public');
+
+            $versionModel = new \App\Models\AppVersion;
+
+            $versionModel->alias = $request->input('aliasInput');
+            $versionModel->notes = $request->input('FormNotes');;
+            $versionModel->version = $request->input('versionInput');;
+            $versionModel->download_path = '/storage/' . $filePath;
+            $versionModel->save();    
+
+            return back()->with('success', 'File was uploaded.');
+        }
+
+
+        
     }
 
     /**

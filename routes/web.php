@@ -37,6 +37,7 @@ Route::get('program/{sessionID}/{apptimeID}', 'UserWebResourceController@GetAppS
 
 Route::get('about', 'VersionController@DisplayAbout'); //Fetch individual app and it's relevant information
 Route::get('download', 'VersionController@DisplayDownload'); //Fetch individual app and it's relevant information
+Route::post('download', 'VersionController@Store'); //store user upload
 
 
 /** Redirect pages */

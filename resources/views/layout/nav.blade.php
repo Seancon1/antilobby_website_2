@@ -15,6 +15,9 @@
 </div>
 @endauth
 
+
 <div class="btn-group" role="group" aria-label="...">
     <a class="btn btn-outline-dark" href="{{ URL::to("about") }}" role="button">About</a>
+    <a class="btn btn-outline-success" href="{{ URL::to("download") }}" role="button">Download</a>
 </div>
+

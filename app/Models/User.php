@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'account_type',
     ];
 
     /**
@@ -63,4 +63,21 @@ class User extends Authenticatable
         //return $this->hasMany('App\Models\Session', 'user_id', 'id');
         return $this->hasMany('App\Models\Session');
     }
+
+    public function isAdmin() {
+
+        if($this->account_type >= 9000) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getNameAttribute() {
+        return "{$this->name}";
+    }
+
+    public function getName() {
+        return "{$this->getNameAttribute}";
+    }
+
 }
