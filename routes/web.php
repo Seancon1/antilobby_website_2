@@ -39,6 +39,9 @@ Route::get('about', 'VersionController@DisplayAbout'); //Fetch individual app an
 Route::get('download', 'VersionController@DisplayDownload'); //Fetch individual app and it's relevant information
 Route::post('download', 'VersionController@Store'); //store user upload
 
+/** Download route for client */
+Route::get('download/latest', 'VersionController@latest'); //selects and begins downloading the most recent release
+Route::get('download/latest/version', 'VersionController@version'); //prints the most current upload version
 
 /** Redirect pages */
 

@@ -11,10 +11,10 @@
         What better to make than a program that does that for me? </p>
         </div>
         <div class="col-lg-6 col-md-8 col-sm-12">    
-            <img src="https://i.gyazo.com/c5098dc18cece75850c1bd0572ad6dc4.png" alt="Image from Gyazo" width="500px" />
+            <img src="https://i.gyazo.com/c5098dc18cece75850c1bd0572ad6dc4.png" class="img-fluid" alt="Image from Gyazo" width="500px" />
         </div>
         <div class="col-lg-6 col-md-8 col-sm-12">
-        <figure class="wp-block-video aligncenter"><video width="500px" autoplay loop muted src="https://i.gyazo.com/2ee718167ea95b47d58511c1df4f5c6f.mp4"></video></figure>
+        <figure class="wp-block-video aligncenter"><video width="500px" class="img-fluid"autoplay loop muted src="https://i.gyazo.com/2ee718167ea95b47d58511c1df4f5c6f.mp4"></video></figure>
         </div>
 </div>
 

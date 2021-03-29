@@ -42,6 +42,28 @@ class VersionController extends Controller
     }
 
     /**
+     * Fetches most recent upload for version control.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function latest()
+    {
+        $currentVersion = \App\Models\AppVersion::where('id', '>', '0')->orderByDesc('version')->first();
+        return redirect($currentVersion->download_path);
+    }
+
+     /**
+     * Fetches most recent upload for version number.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function version()
+    {
+        $currentVersion = \App\Models\AppVersion::where('id', '>', '0')->orderByDesc('version')->first();
+        echo $currentVersion->version;
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

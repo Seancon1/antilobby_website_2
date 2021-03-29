@@ -51,6 +51,7 @@ $displayedFirst = false;
           <p>Welcome to the Antilobby download page. Here is the official location that all new releases will be made. Please use this space to receive all updates for Antilobby.</p>
           <p>Keep in mind, the Antilobby application does have an auto-updating feature which will soon be using this new location to download the most recent version.</p>
           <p>I hope that you find Antilobby insightful for your day-to-day computer usage. Watch this space!</p>
+          <p class="alert alert-info">By downloading this application, you understand it is in early stages of development and may not provide enhanced security measures for your data and may have features that do not work.</p>
         </div>  
         <div class="col-lg-6"> 
 
@@ -80,7 +81,10 @@ $displayedFirst = false;
           <h5 class="mb-0">
             <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ $version->version }}" aria-expanded="false" aria-controls="collapse{{ $version->version }}">
               Version {{ $version->version }}
-            </button> ( {{ Carbon::parse($currentVersion->created_at)->diffForHumans() }} )
+            </button> 
+            <span class="text-muted">
+                ( {{ Carbon::parse($version->created_at)->diffForHumans() }} )
+            </span>
           </h5>
         </div>
     
