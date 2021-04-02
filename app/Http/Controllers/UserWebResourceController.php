@@ -73,7 +73,7 @@ class UserWebResourceController extends Controller
 
             $outChart = Chartisan::build()
             ->labels($chartCollection->keys()->toArray())
-            ->dataset('Items', $chartCollection->values()->toArray())
+            ->dataset('Seconds', $chartCollection->values()->toArray())
             ->toJSON();
 
             return $outChart;

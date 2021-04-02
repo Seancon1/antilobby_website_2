@@ -55,6 +55,21 @@
                 .colors(['green', 'red', 'blue', 'purple', 'yellow', 'grey', 'black','brown','orange','pink'])
               @endif
               ,
+              loader: {
+                color: '#193C78',
+                size: [75, 75],
+                type: 'bar',
+                textColor: '#193C78',
+                text: 'Fetching yummy data...',
+            },
+              error: {
+                    color: '#780C0C',
+                    size: [50, 50],
+                    text: 'Whoops! Could not fetch data at this time.',
+                    textColor: '#900C3F',
+                    type: 'general',
+                    debug: false,
+                },
         })
     </script>
 

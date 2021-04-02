@@ -33,7 +33,7 @@ class PublicWebResourceController extends Controller
 
         $outChart = Chartisan::build()
         ->labels($collection->keys()->toArray())
-        ->dataset('Items', $collection->values()->toArray())
+        ->dataset('Seconds', $collection->values()->toArray())
         ->toJSON();
 
         //dd($collection);
