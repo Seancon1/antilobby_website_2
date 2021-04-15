@@ -50,6 +50,7 @@ Route::get('download/latest/version', 'VersionController@version'); //prints the
 Route::middleware('auth:sanctum')->get('user/sessions/', 'UserWebResourceController@GetAllUserPrograms');
 Route::middleware('auth:sanctum')->get('user/program/totals', 'UserWebResourceController@GetUserProgramTotals');
 Route::middleware('auth:sanctum')->get('user/program/totals/{appName}', 'UserWebResourceController@GetUserProgramSingle');
+Route::middleware('auth:sanctum')->get('user/program/inspect/{appName}', 'UserWebResourceController@InspectSingleProgram');
 Route::middleware('auth:sanctum')->get('user/sessions/stats', 'UserWebResourceController@GetStats'); //Private Stats
 Route::middleware('auth:sanctum')->get('user/sessions/stats', 'UserWebResourceController@GetStats'); //Private Stats
 Route::middleware('auth:sanctum')->get('user/settings', 'UserWebResourceController@Settings'); //Private Stats

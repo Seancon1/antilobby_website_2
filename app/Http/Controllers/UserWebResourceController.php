@@ -476,7 +476,7 @@ class UserWebResourceController extends Controller
      }
 
 
-     function GetStats(Request $request) {
+    public function GetStats(Request $request) {
 
         $Sessions = \App\Models\Session::where('user_id', '=', $request->user()->id)->where('time', '>=', 300)->get();
 
@@ -500,9 +500,64 @@ class UserWebResourceController extends Controller
         return view('viewAllStats', ['readyTotals' => $readyTotals, 'request' => $request, 'isPrivate' => true]);
      }
 
-     function Settings(Request $request) {
-
-
+    public function Settings(Request $request) {
         return view('settings');
      }
+
+     /**
+      * Generates Data for Inspect page, if no [?chart=true] then return view
+      */
+    public function InspectSingleProgram(Request $request) {
+
+        if($request->input('chart') == true) {
+            $Chart = Chartisan::build();
+
+            $App = \App\Models\AppTime::where('user_id', '=', $request->user()->id)
+            ->where('appName', '=', $request->appName)
+            ->orderByDesc('created_at')
+            ->get();
+    
+
+            /*
+            $outChart->labels($collection->keys()->toArray())
+                    ->dataset("DemoSection".$section, $collection->values()->toArray());
+
+            $outChart = Chartisan::build()
+                ->labels($collectionToDisplay->keys()->toArray())
+                ->dataset($datasetDescription, $collectionToDisplay->values()->toArray())
+                ->toJSON();
+            */
+
+            return 'chart_defined';
+        }
+
+        $App = \App\Models\AppTime::where('user_id', '=', $request->user()->id)
+        ->where('appName', '=', $request->appName)
+        ->orderByDesc('created_at')
+        ->paginate(20);
+        $collection = collect();
+
+        //TEMPORARY: For now sum, up time from the last 1 week, 1 month, last 6 months
+        $timeLastWeek = \App\Models\AppTime::where('user_id', '=', $request->user()->id)
+                                            ->where('appName', '=', $request->appName)
+                                            ->where('created_at', '>' ,Carbon::now()->subDays(7))
+                                            ->sum('appTime');
+        $collection->put('week', $timeLastWeek);        
+        
+        $timeLastMonth = \App\Models\AppTime::where('user_id', '=', $request->user()->id)
+                                            ->where('appName', '=', $request->appName)
+                                            ->where('created_at', '>' ,Carbon::now()->subDays(31))
+                                            ->sum('appTime');
+        $collection->put('month', $timeLastMonth);
+
+        $timeLastYear = \App\Models\AppTime::where('user_id', '=', $request->user()->id)
+                                            ->where('appName', '=', $request->appName)
+                                            ->where('created_at', '>' ,Carbon::now()->subDays(365))
+                                            ->sum('appTime');
+        $collection->put('year', $timeLastYear);
+
+
+        return view('programs.inspect', ['appName' => $request->appName, 'apps' => $App, 'timeTotals' => $collection]);
+     }
+
 }
