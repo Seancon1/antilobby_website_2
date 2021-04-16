@@ -51,7 +51,6 @@ $displayedFirst = false;
           <p>Welcome to the Antilobby download page. Here is the official location that all new releases will be made. Please use this space to receive all updates for Antilobby.</p>
           <p>Keep in mind, the Antilobby application does have an auto-updating feature which will soon be using this new location to download the most recent version.</p>
           <p>I hope that you find Antilobby insightful for your day-to-day computer usage. Watch this space!</p>
-          <p class="alert alert-info">By downloading this application, you understand it is in early stages of development and may not provide enhanced security measures for your data and may have features that do not work.</p>
         </div>  
         <div class="col-lg-6"> 
 
@@ -62,7 +61,10 @@ $displayedFirst = false;
               <div class="card-body">
                 <h5 class="card-title">{{$currentVersion->alias}}</h5>
                 <p class="card-text">{{$currentVersion->notes}}</p>
-                <a href="{{ $currentVersion->download_path }}" class="btn btn-success">Download</a>
+                <!--<a href="{{ $currentVersion->download_path }}" class="btn btn-success">Download</a>-->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalDownloadTemplate" onclick="setDownloadLink('{{ url($currentVersion->download_path) }}')">
+                  Download
+                </button>
               </div>
               <div class="card-footer text-muted">
                 {{ Carbon::parse($currentVersion->created_at)->diffForHumans() }}
@@ -91,7 +93,10 @@ $displayedFirst = false;
         <div id="collapse{{ $version->version }}" class="collapse" aria-labelledby="heading{{ $version->version }}" data-parent="#accordion">
           <div class="card-body">
             {{ $version->notes }}
-            <a href="{{ $version->download_path }}" class="btn btn-outline-secondary" style="margin-top: 5px;">Download</a>
+            <!--<a href="{{ $version->download_path }}" class="btn btn-outline-secondary" style="margin-top: 5px;">Download</a>-->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalDownloadTemplate" onclick="setDownloadLink('{{ url($version->download_path) }}')">
+              Download
+            </button>
           </div>
         </div>
       </div>
@@ -100,5 +105,41 @@ $displayedFirst = false;
   </div>
 </div>
 
+<script type="text/javascript">
+  var downloadLink = "#";
+  
+  function setDownloadLink(text) {
+    document.getElementById("primaryDownloadItem").href=text; 
+    console.log("CLICKED " + text);
+    return false;
+  }
+
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="modalDownloadTemplate" tabindex="-1" role="dialog" aria-labelledby="modalDownloadTemplate" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLongTitle">Do You Agree?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="alert alert-info">
+          By downloading this application, you understand it is in early stages of development and may not 
+          provide enhanced security measures for your data and may have features that do not work.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <a type="button" class="btn btn-success" name="primaryDownloadItem" id="primaryDownloadItem" href="#">I agree, Download</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
+
 
