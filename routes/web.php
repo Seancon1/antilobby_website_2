@@ -129,3 +129,7 @@ Route::get('sanctum/token', function (Request $request) {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::get('logout', function (Request $request) {
+    return redirect('dashboard');
+});

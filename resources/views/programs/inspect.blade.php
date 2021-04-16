@@ -10,7 +10,14 @@ use Carbon\CarbonInterval;
 
     <div class="flex-center position-ref full-height">
         <div class="content">
-            <h1>Program Inspect for {{ $appName ?? '' }}</h1>
+            <h3>Your Activity for {{ $appName ?? '' }}</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <p>This page shows all of your activity for this selected process. This includes all sessions that
+                        include {{ $appName ?? '' }}. The sum of time you have been active on this process is also displayed below.
+                    </p>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="card">
@@ -42,7 +49,6 @@ use Carbon\CarbonInterval;
             <table class="table table-hover">
                 <thead>
                     <th scope="col"></th>
-                    <th scope="col">#</th>
                     <th scope="col">Session ID</th>
                     <th scope="col">Program</th>
                     <th scope="col">Quantity</th>
@@ -52,7 +58,6 @@ use Carbon\CarbonInterval;
                     @foreach($apps as $app)
                     <tr>
                         <th scope="row">
-                            <td class="inner-table">{{ $app->id }}</td>
                             <td class="inner-table"><a href="/session/{{ $app->sessionValue }}">{{ $app->sessionValue }}</a></td>
                             <td class="inner-table">{{ $app->appName }}</td>
                             <td class="inner-table">{{ CarbonInterval::seconds($app->appTime)->cascade()->forHumans(['short' => true]) }}</td>

@@ -28,7 +28,11 @@
                                 <th scope="row" id='plusminus{{ $app->id }}'>+</th>
                                     <td>{{ $app->appName }}</td>
                                     <td>{{ gmdate("H:i:s", $app->appTime) }}</td>
-                                    <td><a href="/user/program/inspect/{{ $app->appName }}">View More</a></td>
+                                    <td>
+                                        @if($doesUserOwnSession)
+                                        <a href="/user/program/inspect/{{ $app->appName }}">View More</a>
+                                        @endif
+                                    </td>
                             </tr>
                             <tr class="collapse" id="collapsable{{ $app->id }}">
                                 <td colspan="4" >

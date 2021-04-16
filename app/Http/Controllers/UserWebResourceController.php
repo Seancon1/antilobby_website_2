@@ -39,6 +39,7 @@ class UserWebResourceController extends Controller
 
         $collectionToDisplay = ($request->input('time') == 'asc') ? $totalsCollection->sort() : $totalsCollection->sortDesc();
 
+
         //dd($collectionToDisplay);
 
         return view("UserProgramTotals", ['request'=> $request, 'SumOfUniquePrograms'=>$collectionToDisplay]);
