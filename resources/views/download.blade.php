@@ -110,8 +110,7 @@ $displayedFirst = false;
   
   function setDownloadLink(text) {
     document.getElementById("primaryDownloadItem").href=text; 
-    console.log("CLICKED " + text);
-    return false;
+      return false;
   }
 
 </script>
