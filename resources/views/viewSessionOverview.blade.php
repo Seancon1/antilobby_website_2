@@ -4,7 +4,7 @@
         <div class="content">
             @if(!$PublicSessions)
             <h4>Your Sessions</h4>
-                <div class="col-md-12">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/user/sessions?json=true', 'uniqueID' => '1', 'chartType' => 'bar', 'chartTitle' => 'Latest 10 Sessions (Newest to Oldest)', 'legend' => 'true', 'colors' => '#1B5CB5'])</div>
+                <div class="col-md-12">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/user/sessions?json=true', 'uniqueID' => '1', 'chartType' => 'bar', 'chartTitle' => 'Latest 20 Sessions (Newest to Oldest)', 'legend' => 'true', 'colors' => '#1B5CB5'])</div>
             @else
             <h4>Public Sessions</h4>
                 <div class="col-md-12">@include('charts.default', ['bladePassUrl'=> 'https://antilobby.prestigecode.com/chart/public/sessions', 'uniqueID' => '2', 'chartType' => 'bar', 'chartTitle' => 'Latest 10 Public Sessions (Newest to Oldest)', 'legend' => 'true'])</div>

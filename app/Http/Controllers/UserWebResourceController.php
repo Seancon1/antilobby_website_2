@@ -125,9 +125,30 @@ class UserWebResourceController extends Controller
 
     public function GetAppSingleJson(Request $request) {
         $startTimeCollection = collect([]);
-        $sessionStartTime = \App\Models\Session::find($request->sessionID)->first()->created_at;
-        $startTimeCollection->put("{$sessionStartTime->format("h.i")}", 60);
+        $sessionStartTime = \App\Models\Session::find($request->sessionID)->date;
+        $sessionStartTime = Carbon::parse($sessionStartTime);
+
+        //Bad practice but testing this for now
+        $startTimeCollection->put("{$sessionStartTime->subMinute(3)->format("H.i")}", 60);
+        $startTimeCollection->put("{$sessionStartTime->subMinute(2)->format("H.i")}", 60);
+        $startTimeCollection->put("{$sessionStartTime->subMinute(1)->format("H.i")}", 60);
+        $startTimeCollection->put("{$sessionStartTime->subMinute()->format("H.i")}", 60);
+        $startTimeCollection->put("{$sessionStartTime->format("H.i")}", 60);
+        $startTimeCollection->put("{$sessionStartTime->subMinute()->format("H.i")}", 60);
+        $startTimeCollection->put("{$sessionStartTime->subMinute(1)->format("H.i")}", 60);
+        $startTimeCollection->put("{$sessionStartTime->addMinute(2)->format("H.i")}", 60);
+        $startTimeCollection->put("{$sessionStartTime->addMinute(3)->format("H.i")}", 60);
+
+
+
+
+        $debug = $request->input('debug');
     
+        if($debug) {
+            //dd($sessionStartTime);
+            dd($startTimeCollection);
+        }
+
        //dd($startTimeCollection);
 
 
