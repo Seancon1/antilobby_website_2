@@ -73,11 +73,12 @@ class User extends Authenticatable
     }
 
     public function getNameAttribute() {
-        return "{$this->name}";
+        //return "{$this->name}";
     }
 
+
     public function getName() {
-        return "{$this->getNameAttribute}";
+        //return "{$this->getNameAttribute}";
     }
 
 }
